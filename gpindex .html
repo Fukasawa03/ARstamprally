@@ -1,0 +1,2747 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="theme-color" content="#0d0d1a" />
+  <title>文化祭ARスタンプラリー 2024</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #ff6b35;
+      --secondary: #ffd23f;
+      --accent: #06ffa5;
+      --dark: #0d0d1a;
+      --card-bg: rgba(13,13,26,0.92);
+      --stamp1: #ff6b35;
+      --stamp2: #a855f7;
+      --stamp3: #06ffa5;
+      --stamp4: #ffd23f;
+      --stamp5: #ef4444;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Zen Maru Gothic', sans-serif;
+      background: var(--dark);
+      color: #fff;
+      overflow: hidden;
+      height: 100dvh;
+      width: 100vw;
+    }
+
+    /* ===== SCREENS ===== */
+    .screen {
+      position: fixed; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      transition: opacity 0.3s, transform 0.3s;
+      z-index: 10;
+    }
+    .screen.hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.97);
+      display: none;
+    }
+
+    /* ===== TITLE SCREEN ===== */
+    #screen-title {
+      background: radial-gradient(ellipse at 30% 20%, #1a0533 0%, var(--dark) 60%);
+      overflow: hidden;
+    }
+    .title-bg-circles {
+      position: absolute; inset: 0; overflow: hidden; pointer-events: none;
+    }
+    .title-bg-circles span {
+      position: absolute; border-radius: 50%; opacity: 0.15;
+      animation: float 6s ease-in-out infinite;
+    }
+    .title-bg-circles span:nth-child(1){width:300px;height:300px;background:var(--primary);top:-100px;right:-80px;animation-delay:0s;}
+    .title-bg-circles span:nth-child(2){width:200px;height:200px;background:var(--secondary);bottom:60px;left:-60px;animation-delay:2s;}
+    .title-bg-circles span:nth-child(3){width:150px;height:150px;background:var(--accent);top:40%;right:10%;animation-delay:4s;}
+    @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-20px);}}
+
+    .title-badge {
+      font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--accent); border: 1px solid var(--accent);
+      padding: 4px 14px; border-radius: 20px; margin-bottom: 20px;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.5;}}
+
+    .title-logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(28px, 8vw, 52px);
+      font-weight: 900;
+      line-height: 1.1;
+      text-align: center;
+      background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+      filter: drop-shadow(0 0 30px rgba(255,107,53,0.4));
+    }
+    .title-sub {
+      font-size: 13px; color: rgba(255,255,255,0.6);
+      letter-spacing: 2px; margin-bottom: 40px;
+    }
+
+    .stamp-preview-row {
+      display: flex; gap: 12px; margin-bottom: 40px;
+    }
+    .stamp-preview-item {
+      width: 52px; height: 52px; border-radius: 50%;
+      border: 3px solid rgba(255,255,255,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px;
+      animation: pop 0.5s ease backwards;
+    }
+    .stamp-preview-item:nth-child(1){animation-delay:0.1s;border-color:var(--stamp1);}
+    .stamp-preview-item:nth-child(2){animation-delay:0.2s;border-color:var(--stamp2);}
+    .stamp-preview-item:nth-child(3){animation-delay:0.3s;border-color:var(--stamp3);}
+    .stamp-preview-item:nth-child(4){animation-delay:0.4s;border-color:var(--stamp4);}
+    .stamp-preview-item:nth-child(5){animation-delay:0.5s;border-color:var(--stamp5);}
+    @keyframes pop{from{transform:scale(0);opacity:0;}to{transform:scale(1);opacity:1;}}
+
+    .btn-start {
+      background: linear-gradient(135deg, var(--primary), #ff3f8e);
+      color: #fff; border: none; border-radius: 50px;
+      padding: 16px 48px; font-size: 18px; font-weight: 700;
+      cursor: pointer; font-family: 'Zen Maru Gothic', sans-serif;
+      box-shadow: 0 8px 32px rgba(255,107,53,0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+      letter-spacing: 1px;
+    }
+    .btn-start:active { transform: scale(0.96); box-shadow: 0 4px 16px rgba(255,107,53,0.3); }
+
+    .how-to-link {
+      margin-top: 20px; color: rgba(255,255,255,0.4);
+      font-size: 13px; cursor: pointer; text-decoration: underline;
+      background: none; border: none; font-family: inherit;
+      white-space: pre-line; text-align: center; line-height: 1.7;
+    }
+
+    /* ===== HOW TO SCREEN ===== */
+    #screen-howto {
+      background: var(--dark);
+      padding: 24px 24px 100px;
+      overflow-y: auto;
+      justify-content: flex-start;
+      align-items: center;
+    }
+    .howto-title {
+      font-size: 22px; font-weight: 900; margin-bottom: 24px;
+      color: var(--secondary);
+    }
+    .howto-steps { width: 100%; max-width: 380px; }
+    .howto-step {
+      display: flex; gap: 16px; align-items: flex-start;
+      margin-bottom: 20px; padding: 16px;
+      background: rgba(255,255,255,0.05); border-radius: 16px;
+      border-left: 3px solid var(--accent);
+    }
+    .howto-step-num {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--accent); color: var(--dark);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 16px; flex-shrink: 0;
+    }
+    .howto-step-text { font-size: 14px; line-height: 1.6; }
+    .howto-step-text strong { display: block; font-size: 16px; margin-bottom: 4px; color: #fff; }
+
+    /* ===== MAP SCREEN ===== */
+    #screen-map {
+      background: var(--dark);
+      padding: 0;
+      align-items: stretch;
+      overflow-y: auto;
+    }
+    .map-header {
+      position: sticky; top: 0; z-index: 5;
+      background: rgba(13,13,26,0.95);
+      backdrop-filter: blur(12px);
+      padding: 16px 20px 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .map-header-row {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .map-title { font-size: 18px; font-weight: 900; }
+    .progress-count {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 20px; font-weight: 700;
+      color: var(--accent);
+    }
+    .progress-bar-wrap {
+      margin-top: 10px; height: 6px;
+      background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%; border-radius: 10px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .map-stamps-grid {
+      padding: 20px;
+      display: flex; flex-direction: column; gap: 14px;
+    }
+    .stamp-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 16px 18px;
+      display: flex; align-items: center; gap: 16px;
+      transition: border-color 0.3s, background 0.3s;
+      cursor: pointer;
+    }
+    .stamp-card.collected {
+      border-color: var(--accent);
+      background: rgba(6,255,165,0.06);
+    }
+    .stamp-card-icon {
+      width: 60px; height: 60px; border-radius: 50%;
+      border: 3px solid rgba(255,255,255,0.15);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px; flex-shrink: 0;
+      position: relative; overflow: hidden;
+      background: rgba(255,255,255,0.05);
+      transition: border-color 0.3s;
+    }
+    .stamp-card.collected .stamp-card-icon {
+      border-color: var(--accent);
+      box-shadow: 0 0 20px rgba(6,255,165,0.3);
+    }
+    .stamp-card-icon::after {
+      content: '✓';
+      position: absolute; inset: 0;
+      background: rgba(6,255,165,0.92);
+      color: var(--dark); font-size: 26px; font-weight: 900;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: opacity 0.3s;
+      border-radius: 50%;
+    }
+    .stamp-card.collected .stamp-card-icon::after { opacity: 1; }
+
+    .stamp-card-info { flex: 1; }
+    .stamp-card-name { font-size: 16px; font-weight: 700; margin-bottom: 3px; }
+    .stamp-card-location { font-size: 12px; color: rgba(255,255,255,0.5); }
+    .stamp-card-hint { font-size: 12px; color: rgba(255,255,255,0.35); margin-top: 4px; }
+
+    .stamp-card-badge {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; flex-shrink: 0;
+    }
+    .stamp-card.collected .stamp-card-badge {
+      background: var(--accent); color: var(--dark); font-weight: 700;
+    }
+
+    .btn-scan {
+      position: sticky; bottom: 20px;
+      left: 50%; transform: translateX(-50%);
+      display: block; margin: 10px auto 0;
+      background: linear-gradient(135deg, var(--primary), #ff3f8e);
+      color: #fff; border: none; border-radius: 50px;
+      padding: 16px 40px; font-size: 17px; font-weight: 700;
+      cursor: pointer; font-family: 'Zen Maru Gothic', sans-serif;
+      box-shadow: 0 8px 32px rgba(255,107,53,0.5);
+      transition: transform 0.2s;
+      letter-spacing: 1px;
+      z-index: 10;
+    }
+    .btn-scan:active { transform: translateX(-50%) scale(0.96); }
+
+    /* ===== AR CAMERA SCREEN ===== */
+    #screen-ar {
+      background: #000;
+      z-index: 100;
+    }
+
+    #ar-container {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+    }
+
+    #ar-scene {
+      width: 100%; height: 100%;
+    }
+
+    /* MindAR canvas/video — iOS/Android両対応 */
+    #ar-container canvas,
+    #ar-container video {
+      position: absolute !important;
+      top: 0 !important; left: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover !important;
+      -webkit-transform: translateZ(0); /* iOS GPU合成 */
+    }
+
+    /* A-Frame scene もフルスクリーンに */
+    #ar-container a-scene {
+      position: absolute !important;
+      top: 0 !important; left: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    .ar-overlay {
+      position: absolute; inset: 0; z-index: 20;
+      pointer-events: none;
+    }
+
+    .ar-frame-corners {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: min(70vw, 70vh); height: min(70vw, 70vh);
+    }
+    .ar-frame-corners::before,
+    .ar-frame-corners::after,
+    .ar-frame-corners span::before,
+    .ar-frame-corners span::after {
+      content: '';
+      position: absolute;
+      width: 36px; height: 36px;
+      border-color: var(--accent);
+      border-style: solid;
+    }
+    .ar-frame-corners::before { top:0;left:0;border-width:3px 0 0 3px;border-radius:4px 0 0 0; }
+    .ar-frame-corners::after  { top:0;right:0;border-width:3px 3px 0 0;border-radius:0 4px 0 0; }
+    .ar-frame-corners span::before { bottom:0;left:0;border-width:0 0 3px 3px;border-radius:0 0 0 4px; }
+    .ar-frame-corners span::after  { bottom:0;right:0;border-width:0 3px 3px 0;border-radius:0 0 4px 0; }
+
+    .ar-scan-line {
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      animation: scanline 2s ease-in-out infinite;
+    }
+    @keyframes scanline {
+      0%   { top: 0%; opacity: 1; }
+      100% { top: 100%; opacity: 0.5; }
+    }
+
+    .ar-status-bar {
+      position: absolute; top: 0; left: 0; right: 0;
+      padding: 50px 20px 16px;
+      background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, transparent 100%);
+      pointer-events: auto;
+    }
+    .ar-status-text {
+      text-align: center; font-size: 14px; color: rgba(255,255,255,0.8);
+      letter-spacing: 1px;
+    }
+    .ar-status-text .blink {
+      animation: blink 1.2s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+
+    .ar-bottom-bar {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 20px 20px 40px;
+      background: linear-gradient(0deg, rgba(0,0,0,0.8) 0%, transparent 100%);
+      display: flex; justify-content: center;
+      pointer-events: auto;
+    }
+    .btn-close-ar {
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: #fff; border-radius: 50px;
+      padding: 12px 36px; font-size: 15px; font-weight: 700;
+      cursor: pointer; font-family: 'Zen Maru Gothic', sans-serif;
+      transition: background 0.2s;
+    }
+    .btn-close-ar:active { background: rgba(255,255,255,0.25); }
+
+    .ar-detected-banner {
+      position: absolute; top: 50%;
+      left: 50%; transform: translate(-50%, -50%);
+      text-align: center;
+      pointer-events: none; z-index: 30;
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .ar-detected-banner.show { opacity: 1; }
+    .ar-detected-banner-inner {
+      background: rgba(6,255,165,0.15);
+      border: 2px solid var(--accent);
+      border-radius: 20px; padding: 20px 32px;
+      backdrop-filter: blur(12px);
+    }
+    .ar-detected-emoji { font-size: 48px; margin-bottom: 8px; }
+    .ar-detected-label { font-size: 13px; color: var(--accent); letter-spacing: 2px; }
+    .ar-detected-name { font-size: 22px; font-weight: 900; margin-top: 4px; }
+
+    /* ===== STAMP COLLECT SCREEN ===== */
+    #screen-stamp {
+      background: radial-gradient(ellipse at center, rgba(6,255,165,0.15), var(--dark));
+      z-index: 200;
+      text-align: center;
+      padding: 40px 24px;
+    }
+    .stamp-collect-title {
+      font-size: 13px; letter-spacing: 3px; color: var(--accent);
+      margin-bottom: 20px; text-transform: uppercase;
+    }
+    .stamp-collect-icon {
+      width: 140px; height: 140px; border-radius: 50%;
+      border: 6px solid var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 64px; margin: 0 auto 24px;
+      background: rgba(6,255,165,0.1);
+      box-shadow: 0 0 60px rgba(6,255,165,0.4);
+      animation: stampIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+    }
+    @keyframes stampIn {
+      from { transform: scale(0) rotate(-20deg); opacity: 0; }
+      to   { transform: scale(1) rotate(0deg);   opacity: 1; }
+    }
+    .stamp-collect-name {
+      font-size: 28px; font-weight: 900; margin-bottom: 8px;
+    }
+    .stamp-collect-loc {
+      font-size: 14px; color: rgba(255,255,255,0.5); margin-bottom: 32px;
+    }
+    .stamp-collect-msg {
+      font-size: 15px; line-height: 1.7;
+      color: rgba(255,255,255,0.7); margin-bottom: 40px;
+      max-width: 320px; margin-left: auto; margin-right: auto;
+    }
+    .btn-back-map {
+      background: var(--accent); color: var(--dark);
+      border: none; border-radius: 50px;
+      padding: 16px 48px; font-size: 17px; font-weight: 900;
+      cursor: pointer; font-family: 'Zen Maru Gothic', sans-serif;
+      box-shadow: 0 8px 32px rgba(6,255,165,0.3);
+    }
+
+    /* ===== COMPLETE SCREEN ===== */
+    #screen-complete {
+      background: radial-gradient(ellipse at center, #1a0533, var(--dark));
+      z-index: 300;
+      text-align: center;
+      padding: 40px 24px;
+      overflow: hidden;
+    }
+    .complete-confetti {
+      position: absolute; inset: 0; pointer-events: none;
+      overflow: hidden;
+    }
+    .confetti-piece {
+      position: absolute;
+      width: 10px; height: 10px;
+      border-radius: 2px;
+      animation: confettiFall linear infinite;
+    }
+    @keyframes confettiFall {
+      0%   { transform: translateY(-20px) rotate(0deg);   opacity: 1; }
+      100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+    }
+    .complete-star { font-size: 60px; margin-bottom: 16px; animation: spinIn 0.6s ease; }
+    @keyframes spinIn { from{transform:rotate(-180deg) scale(0);}to{transform:rotate(0) scale(1);} }
+    .complete-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(24px, 7vw, 40px); font-weight: 900;
+      background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; margin-bottom: 8px;
+    }
+    .complete-subtitle { font-size: 14px; color: rgba(255,255,255,0.6); margin-bottom: 12px; }
+    .complete-time-badge {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 18px; font-weight: 700;
+      color: var(--secondary);
+      background: rgba(255,210,63,0.1);
+      border: 1px solid rgba(255,210,63,0.3);
+      border-radius: 30px; padding: 8px 24px;
+      margin-bottom: 24px;
+      letter-spacing: 2px;
+    }
+    .complete-stamps-row {
+      display: flex; gap: 10px; justify-content: center;
+      margin-bottom: 32px; flex-wrap: wrap;
+    }
+    .complete-stamp-item {
+      width: 56px; height: 56px; border-radius: 50%;
+      border: 3px solid var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px;
+      background: rgba(6,255,165,0.1);
+      box-shadow: 0 0 20px rgba(6,255,165,0.3);
+      animation: pop 0.5s ease backwards;
+    }
+    .complete-coupon {
+      background: rgba(255,210,63,0.1);
+      border: 2px dashed var(--secondary);
+      border-radius: 20px; padding: 20px 28px;
+      max-width: 320px; margin: 0 auto 32px;
+    }
+    .complete-coupon-label {
+      font-size: 11px; letter-spacing: 2px; color: var(--secondary);
+      text-transform: uppercase; margin-bottom: 8px;
+    }
+    .complete-coupon-text {
+      font-size: 20px; font-weight: 900;
+    }
+    .complete-coupon-note {
+      font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 6px;
+    }
+    .btn-reset {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #fff; border-radius: 50px;
+      padding: 14px 40px; font-size: 15px; font-weight: 700;
+      cursor: pointer; font-family: 'Zen Maru Gothic', sans-serif;
+    }
+
+    /* ===== BOTTOM NAV ===== */
+    .bottom-nav {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: rgba(13,13,26,0.95);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      display: flex; z-index: 50;
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+    .nav-btn {
+      flex: 1; padding: 12px 8px 10px;
+      background: none; border: none; color: rgba(255,255,255,0.4);
+      font-family: 'Zen Maru Gothic', sans-serif;
+      font-size: 10px; cursor: pointer;
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      transition: color 0.2s;
+    }
+    .nav-btn.active { color: var(--accent); }
+    .nav-btn-icon { font-size: 22px; line-height: 1; }
+
+    /* ===== ADMIN GEAR BUTTON ===== */
+    #admin-gear-btn {
+      position: absolute; top: 16px; right: 16px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 50%; width: 36px; height: 36px;
+      font-size: 16px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(255,255,255,0.4);
+      transition: background 0.2s, color 0.2s;
+      z-index: 6;
+    }
+    #admin-gear-btn:active { background: rgba(255,255,255,0.15); color: #fff; }
+
+    /* ===== ADMIN PASSWORD MODAL ===== */
+    #admin-auth-modal {
+      position: fixed; inset: 0; z-index: 1000;
+      background: rgba(0,0,0,0.85); backdrop-filter: blur(12px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity 0.3s;
+    }
+    #admin-auth-modal.show { opacity: 1; pointer-events: auto; }
+    .admin-auth-box {
+      background: #111827; border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 24px; padding: 32px 28px;
+      width: min(340px, 90vw); text-align: center;
+    }
+    .admin-auth-icon { font-size: 40px; margin-bottom: 12px; }
+    .admin-auth-title { font-size: 18px; font-weight: 900; margin-bottom: 4px; }
+    .admin-auth-sub { font-size: 12px; color: rgba(255,255,255,0.4); margin-bottom: 24px; }
+    .admin-auth-input {
+      width: 100%; background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.15); border-radius: 12px;
+      padding: 14px 16px; color: #fff; font-size: 16px;
+      font-family: 'Zen Maru Gothic', sans-serif;
+      margin-bottom: 12px; text-align: center; letter-spacing: 4px;
+      outline: none; transition: border-color 0.2s;
+    }
+    .admin-auth-input:focus { border-color: var(--accent); }
+    .admin-auth-input.error { border-color: #ef4444; animation: shake 0.3s ease; }
+    @keyframes shake {
+      0%,100%{transform:translateX(0);}
+      25%{transform:translateX(-8px);}
+      75%{transform:translateX(8px);}
+    }
+    .admin-auth-btn {
+      width: 100%; background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: #fff; border: none; border-radius: 12px;
+      padding: 14px; font-size: 16px; font-weight: 700;
+      cursor: pointer; font-family: 'Zen Maru Gothic', sans-serif;
+      margin-bottom: 10px;
+    }
+    .admin-auth-cancel {
+      background: none; border: none; color: rgba(255,255,255,0.3);
+      font-size: 13px; cursor: pointer; font-family: 'Zen Maru Gothic', sans-serif;
+    }
+
+    /* ===== ADMIN PANEL SCREEN ===== */
+    #screen-admin {
+      background: #0a0a14;
+      align-items: stretch; justify-content: flex-start;
+      overflow-y: auto; padding-bottom: 100px;
+      z-index: 1100;
+    }
+    .admin-header {
+      position: sticky; top: 0; z-index: 10;
+      background: rgba(10,10,20,0.97); backdrop-filter: blur(12px);
+      padding: 16px 20px 14px;
+      border-bottom: 1px solid rgba(99,102,241,0.3);
+    }
+    .admin-header-row {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .admin-title-text {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .admin-badge {
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: #fff; font-size: 10px; font-weight: 700;
+      padding: 3px 10px; border-radius: 20px; letter-spacing: 1px;
+    }
+    .admin-title-name { font-size: 17px; font-weight: 900; }
+    .btn-admin-close {
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.6); border-radius: 50%; width: 36px; height: 36px;
+      cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center;
+    }
+    .admin-stats-row {
+      display: flex; gap: 10px; margin-top: 12px;
+    }
+    .admin-stat {
+      flex: 1; background: rgba(99,102,241,0.1); border-radius: 10px;
+      padding: 10px 12px; text-align: center;
+    }
+    .admin-stat-num { font-family: 'Orbitron', sans-serif; font-size: 20px; font-weight: 700; color: #a5b4fc; }
+    .admin-stat-label { font-size: 10px; color: rgba(255,255,255,0.4); margin-top: 2px; }
+
+    .admin-section { padding: 20px 20px 0; }
+    .admin-section-title {
+      font-size: 12px; letter-spacing: 2px; color: rgba(255,255,255,0.4);
+      text-transform: uppercase; margin-bottom: 14px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .admin-section-title::after {
+      content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.08);
+    }
+
+    /* Stamp edit cards */
+    .admin-stamp-list { display: flex; flex-direction: column; gap: 12px; }
+    .admin-stamp-card {
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px; overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    .admin-stamp-card:focus-within { border-color: rgba(99,102,241,0.5); }
+    .admin-stamp-card-header {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 16px; cursor: pointer;
+    }
+    .admin-stamp-card-emoji { font-size: 28px; width: 44px; text-align: center; }
+    .admin-stamp-card-info { flex: 1; }
+    .admin-stamp-card-name { font-size: 15px; font-weight: 700; }
+    .admin-stamp-card-meta { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 2px; }
+    .admin-stamp-card-actions { display: flex; gap: 8px; }
+    .admin-action-btn {
+      width: 32px; height: 32px; border-radius: 8px;
+      border: none; cursor: pointer; font-size: 14px;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+    }
+    .admin-action-btn.edit { background: rgba(99,102,241,0.2); color: #a5b4fc; }
+    .admin-action-btn.delete { background: rgba(239,68,68,0.15); color: #fca5a5; }
+    .admin-action-btn:active { opacity: 0.7; }
+    .admin-stamp-card-body {
+      padding: 0 16px 16px; display: none;
+      flex-direction: column; gap: 10px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding-top: 14px;
+    }
+    .admin-stamp-card-body.open { display: flex; }
+
+    .admin-field { display: flex; flex-direction: column; gap: 5px; }
+    .admin-field-row { display: flex; gap: 10px; }
+    .admin-field-row .admin-field { flex: 1; }
+    .admin-label {
+      font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: 1px;
+    }
+    .admin-input {
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px; padding: 10px 12px; color: #fff;
+      font-size: 14px; font-family: 'Zen Maru Gothic', sans-serif;
+      outline: none; width: 100%; transition: border-color 0.2s;
+    }
+    .admin-input:focus { border-color: rgba(99,102,241,0.6); }
+    .admin-input.emoji-input { font-size: 22px; text-align: center; width: 70px; }
+    .admin-color-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .admin-color-swatch {
+      width: 28px; height: 28px; border-radius: 50%; cursor: pointer;
+      border: 2px solid transparent; transition: border-color 0.2s, transform 0.2s;
+    }
+    .admin-color-swatch.selected { border-color: #fff; transform: scale(1.15); }
+    .admin-color-custom {
+      width: 36px; height: 28px; border-radius: 6px; cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05);
+    }
+    .btn-save-stamp {
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: #fff; border: none; border-radius: 10px;
+      padding: 10px 20px; font-size: 14px; font-weight: 700;
+      cursor: pointer; font-family: 'Zen Maru Gothic', sans-serif;
+      margin-top: 4px; align-self: flex-end;
+    }
+    .btn-drag-handle {
+      color: rgba(255,255,255,0.2); cursor: grab; font-size: 18px;
+      padding: 4px; user-select: none;
+    }
+
+    /* Add stamp button */
+    .btn-add-stamp {
+      width: 100%; margin-top: 14px;
+      background: rgba(99,102,241,0.1); border: 1px dashed rgba(99,102,241,0.4);
+      color: #a5b4fc; border-radius: 14px;
+      padding: 14px; font-size: 15px; font-weight: 700;
+      cursor: pointer; font-family: 'Zen Maru Gothic', sans-serif;
+      transition: background 0.2s;
+    }
+    .btn-add-stamp:active { background: rgba(99,102,241,0.2); }
+
+    /* Settings section */
+    .admin-settings-grid { display: flex; flex-direction: column; gap: 12px; }
+    .admin-setting-row {
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px; padding: 14px 16px;
+    }
+    .admin-setting-label { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+    .admin-setting-sub { font-size: 11px; color: rgba(255,255,255,0.4); margin-bottom: 10px; }
+
+    /* Danger zone */
+    .admin-danger-zone {
+      background: rgba(239,68,68,0.05); border: 1px solid rgba(239,68,68,0.2);
+      border-radius: 14px; padding: 16px;
+    }
+    .btn-danger {
+      background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.3);
+      color: #fca5a5; border-radius: 10px; padding: 10px 18px;
+      font-size: 13px; font-weight: 700; cursor: pointer;
+      font-family: 'Zen Maru Gothic', sans-serif; margin-right: 8px; margin-top: 4px;
+    }
+
+    /* Export/import */
+    .admin-export-area {
+      background: rgba(0,0,0,0.3); border-radius: 10px; padding: 12px;
+      font-size: 11px; color: rgba(255,255,255,0.5);
+      font-family: monospace; word-break: break-all;
+      max-height: 80px; overflow-y: auto; margin-top: 8px;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .btn-admin-action {
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);
+      color: #fff; border-radius: 10px; padding: 9px 16px;
+      font-size: 13px; font-weight: 700; cursor: pointer;
+      font-family: 'Zen Maru Gothic', sans-serif; margin-top: 8px; margin-right: 6px;
+    }
+    .admin-password-change { display: flex; gap: 8px; }
+    .admin-password-change .admin-input { flex: 1; }
+  </style>
+</head>
+<body>
+
+
+
+<!-- TITLE SCREEN -->
+<div class="screen" id="screen-title">
+  <div class="title-bg-circles">
+    <span></span><span></span><span></span>
+  </div>
+  <div class="title-badge">📍 WebAR STAMP RALLY</div>
+  <div class="title-logo">AR<br>スタンプラリー</div>
+  <button id="admin-gear-btn" onclick="openAdminAuth()" title="管理者">⚙️</button>
+  <div class="title-sub">文化祭 2024 ／ 校内探検マップ</div>
+  <div class="stamp-preview-row">
+    <div class="stamp-preview-item">🏫</div>
+    <div class="stamp-preview-item">🎭</div>
+    <div class="stamp-preview-item">🎸</div>
+    <div class="stamp-preview-item">🍱</div>
+    <div class="stamp-preview-item">🌸</div>
+  </div>
+  <button class="btn-start" onclick="startRally()">スタート！</button>
+  <button class="how-to-link" onclick="openHowtoModal()">遊び方を見る</button>
+</div>
+
+<!-- HOWTO MODAL (popup) -->
+<div id="howto-modal" style="
+  position:fixed; inset:0; z-index:2000;
+  background:rgba(0,0,0,0.75); backdrop-filter:blur(8px);
+  display:none; align-items:center; justify-content:center;
+  padding:20px;
+">
+  <div style="
+    background:#111827; border:1px solid rgba(255,255,255,0.1);
+    border-radius:24px; padding:28px 24px;
+    width:100%; max-width:400px; max-height:85dvh;
+    overflow-y:auto; position:relative;
+  ">
+    <button onclick="closeHowtoModal()" style="
+      position:absolute; top:16px; right:16px;
+      background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15);
+      color:#fff; border-radius:50%; width:34px; height:34px;
+      font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center;
+    ">✕</button>
+
+    <div data-id="howto-modal-title" style="font-size:22px; font-weight:900; margin-bottom:20px; color:var(--secondary);">📖 遊び方</div>
+
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div style="display:flex;gap:14px;align-items:flex-start;padding:14px;background:rgba(255,255,255,0.05);border-radius:14px;border-left:3px solid var(--accent);">
+        <div style="width:34px;height:34px;border-radius:50%;background:var(--accent);color:var(--dark);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;flex-shrink:0;">1</div>
+        <div style="font-size:14px;line-height:1.6;"><strong data-step="1" data-type="title" style="display:block;font-size:15px;margin-bottom:3px;color:#fff;">マップを確認する</strong><span data-step="1" data-type="body">スタンプポイントの場所と、そこにあるARマーカーを確認しよう！</span></div>
+      </div>
+      <div style="display:flex;gap:14px;align-items:flex-start;padding:14px;background:rgba(255,255,255,0.05);border-radius:14px;border-left:3px solid var(--accent);">
+        <div style="width:34px;height:34px;border-radius:50%;background:var(--accent);color:var(--dark);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;flex-shrink:0;">2</div>
+        <div style="font-size:14px;line-height:1.6;"><strong data-step="2" data-type="title" style="display:block;font-size:15px;margin-bottom:3px;color:#fff;">マーカーを見つける</strong><span data-step="2" data-type="body">各スポットにあるARマーカー（特製ポスター）を探してね。</span></div>
+      </div>
+      <div style="display:flex;gap:14px;align-items:flex-start;padding:14px;background:rgba(255,255,255,0.05);border-radius:14px;border-left:3px solid var(--accent);">
+        <div style="width:34px;height:34px;border-radius:50%;background:var(--accent);color:var(--dark);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;flex-shrink:0;">3</div>
+        <div style="font-size:14px;line-height:1.6;"><strong data-step="3" data-type="title" style="display:block;font-size:15px;margin-bottom:3px;color:#fff;">カメラでスキャン</strong><span data-step="3" data-type="body">「スキャン」ボタンを押してカメラを起動。マーカーにかざすとスタンプをゲット！</span></div>
+      </div>
+      <div style="display:flex;gap:14px;align-items:flex-start;padding:14px;background:rgba(255,255,255,0.05);border-radius:14px;border-left:3px solid var(--accent);">
+        <div style="width:34px;height:34px;border-radius:50%;background:var(--accent);color:var(--dark);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;flex-shrink:0;">4</div>
+        <div style="font-size:14px;line-height:1.6;"><strong data-step="4" data-type="title" style="display:block;font-size:15px;margin-bottom:3px;color:#fff;">全部集めて特典をゲット！</strong><span data-step="4" data-type="body">5つ全部集めると、文化祭限定のスペシャル特典がもらえるよ 🎉</span></div>
+      </div>
+    </div>
+
+    <button data-id="howto-close-btn" onclick="closeHowtoModal()" style="
+      width:100%; margin-top:24px;
+      background:linear-gradient(135deg,var(--primary),#ff3f8e);
+      color:#fff; border:none; border-radius:50px;
+      padding:14px; font-size:16px; font-weight:700;
+      cursor:pointer; font-family:'Zen Maru Gothic',sans-serif;
+    ">閉じる</button>
+  </div>
+</div>
+
+<!-- MAP SCREEN -->
+<div class="screen hidden" id="screen-map" style="justify-content:flex-start;padding-bottom:80px;">
+  <div class="map-header">
+    <div class="map-header-row">
+      <div class="map-title">📍 スタンプマップ</div>
+      <div class="progress-count" id="progress-count">0 / 5</div>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;">
+      <div class="progress-bar-wrap" style="flex:1;margin-top:0;margin-right:12px;">
+        <div class="progress-bar-fill" id="progress-bar" style="width:0%"></div>
+      </div>
+      <div id="stopwatch-display" style="
+        font-family:'Orbitron',sans-serif; font-size:14px; font-weight:700;
+        color:var(--secondary); background:rgba(255,210,63,0.1);
+        border:1px solid rgba(255,210,63,0.25); border-radius:20px;
+        padding:4px 12px; white-space:nowrap; flex-shrink:0;
+      ">⏱ --:--</div>
+    </div>
+  </div>
+
+  <div class="map-stamps-grid" id="stamp-list">
+    <!-- JS generates cards -->
+  </div>
+
+  <button class="btn-scan" onclick="startAR()">📷 スキャンする</button>
+
+  <!-- タイトルに戻るボタン（誤タップ対策：長押し1.5秒） -->
+  <button id="btn-back-title"
+    ontouchstart="startBackHold(event)" ontouchend="cancelBackHold()" ontouchcancel="cancelBackHold()"
+    onmousedown="startBackHold(event)" onmouseup="cancelBackHold()" onmouseleave="cancelBackHold()"
+    style="
+      position:fixed; bottom:90px; right:16px;
+      background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.15);
+      color:rgba(255,255,255,0.35); border-radius:20px;
+      padding:7px 13px; font-size:11px; font-family:inherit;
+      cursor:pointer; z-index:50; line-height:1.4; text-align:center;
+      -webkit-user-select:none; user-select:none;
+    ">
+    ⬅ 長押しで<br>タイトルへ
+  </button>
+  <!-- 長押しプログレスリング -->
+  <svg id="back-hold-ring" width="48" height="48" style="
+    position:fixed; bottom:82px; right:10px; z-index:51;
+    display:none; pointer-events:none;
+  ">
+    <circle cx="24" cy="24" r="20" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="3"/>
+    <circle id="back-hold-arc" cx="24" cy="24" r="20" fill="none"
+      stroke="#ff6b35" stroke-width="3"
+      stroke-dasharray="125.6" stroke-dashoffset="125.6"
+      stroke-linecap="round"
+      transform="rotate(-90 24 24)"/>
+  </svg>
+</div>
+
+<!-- AR SCREEN -->
+<div class="screen hidden" id="screen-ar">
+  <div id="ar-container"></div>
+
+  <div class="ar-overlay">
+    <div class="ar-frame-corners"><span></span></div>
+    <div class="ar-scan-line"></div>
+  </div>
+
+  <div class="ar-status-bar">
+    <div class="ar-status-text" id="ar-status-text">
+      <span class="blink">●</span> <span id="ar-status-label">ARマーカーにカメラを向けてください</span>
+    </div>
+  </div>
+
+  <div class="ar-detected-banner" id="ar-detected-banner">
+    <div class="ar-detected-banner-inner">
+      <div class="ar-detected-emoji" id="ar-detected-emoji">🏫</div>
+      <div class="ar-detected-label">MARKER FOUND!</div>
+      <div class="ar-detected-name" id="ar-detected-name">エントランス</div>
+    </div>
+  </div>
+
+  <div class="ar-bottom-bar">
+    <button class="btn-close-ar" onclick="closeAR()">✕ 閉じる</button>
+  </div>
+</div>
+
+<!-- STAMP COLLECTED SCREEN -->
+<div class="screen hidden" id="screen-stamp">
+  <div class="stamp-collect-title">✨ スタンプ獲得！</div>
+  <div class="stamp-collect-icon" id="stamp-collect-icon">🏫</div>
+  <div class="stamp-collect-name" id="stamp-collect-name">エントランス</div>
+  <div class="stamp-collect-loc" id="stamp-collect-loc">📍 正面玄関</div>
+  <div class="stamp-collect-msg" id="stamp-collect-msg">文化祭へようこそ！最高の一日にしよう！</div>
+  <button class="btn-back-map" onclick="afterCollect()">マップに戻る</button>
+</div>
+
+<!-- COMPLETE SCREEN -->
+<div class="screen hidden" id="screen-complete">
+  <div class="complete-confetti" id="confetti-container"></div>
+  <div class="complete-star">🌟</div>
+  <div class="complete-title">コンプリート！</div>
+  <div class="complete-subtitle">全5つのスタンプを集めました！</div>
+  <div class="complete-time-badge" id="complete-time-badge">⏱ タイム: --:--</div>
+  <div class="complete-stamps-row" id="complete-stamps-row"></div>
+  <div class="complete-coupon">
+    <div class="complete-coupon-label">🎁 特典クーポン</div>
+    <div class="complete-coupon-text">模擬店 1品無料！</div>
+    <div class="complete-coupon-note">中央広場の文化祭本部に見せてね（本日限り）</div>
+  </div>
+
+</div>
+
+<!-- BOTTOM NAV (shown on map) -->
+<nav class="bottom-nav" id="bottom-nav" style="display:none;">
+  <button class="nav-btn active" id="nav-map" onclick="showScreen('map')">
+    <span class="nav-btn-icon">🗺️</span><span id="nav-map-label">マップ</span>
+  </button>
+  <button class="nav-btn" onclick="openHowtoModal()">
+    <span class="nav-btn-icon">❓</span><span id="nav-howto-label">遊び方</span>
+  </button>
+</nav>
+
+<!-- ADMIN AUTH MODAL -->
+<div id="admin-auth-modal">
+  <div class="admin-auth-box">
+    <div class="admin-auth-icon">🔐</div>
+    <div class="admin-auth-title">管理者ログイン</div>
+    <div class="admin-auth-sub">管理者パスワードを入力してください</div>
+    <input class="admin-auth-input" id="admin-password-input" type="password"
+      placeholder="••••••••" maxlength="20"
+      onkeydown="if(event.key==='Enter')adminLogin()" />
+    <button class="admin-auth-btn" onclick="adminLogin()">ログイン</button>
+    <button class="admin-auth-cancel" onclick="closeAdminAuth()">キャンセル</button>
+  </div>
+</div>
+
+<!-- ADMIN PANEL SCREEN -->
+<div class="screen hidden" id="screen-admin">
+  <div class="admin-header">
+    <div class="admin-header-row">
+      <div class="admin-title-text">
+        <span class="admin-badge">ADMIN</span>
+        <span class="admin-title-name">管理者パネル</span>
+      </div>
+      <button class="btn-admin-close" onclick="closeAdminPanel()">✕</button>
+    </div>
+    <!-- Firebase接続状態バナー -->
+    <div id="firebase-status-banner" style="
+      margin-top:10px; padding:8px 14px; border-radius:10px;
+      font-size:12px; font-weight:700; text-align:center;
+      background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3);
+      color:#fca5a5; display:none;
+    ">
+      ⚠️ Firebase未設定 — 設定変更はこの端末のみに反映されます
+      <div style="font-size:11px;font-weight:400;margin-top:2px;color:rgba(255,255,255,0.4);">
+        FIREBASE_CONFIGにAPIキーを入力すると全端末同期が有効になります
+      </div>
+    </div>
+    <div id="firebase-ok-banner" style="
+      margin-top:10px; padding:8px 14px; border-radius:10px;
+      font-size:12px; font-weight:700; text-align:center;
+      background:rgba(6,255,165,0.1); border:1px solid rgba(6,255,165,0.25);
+      color:#06ffa5; display:none;
+    ">🔥 Firebase接続中 — 設定変更は全端末にリアルタイム反映されます</div>
+    <div class="admin-stats-row">
+      <div class="admin-stat">
+        <div class="admin-stat-num" id="admin-stat-total">5</div>
+        <div class="admin-stat-label">スタンプ数</div>
+      </div>
+      <div class="admin-stat">
+        <div class="admin-stat-num" id="admin-stat-markermax">4</div>
+        <div class="admin-stat-label">最大マーカーIdx</div>
+      </div>
+      <div class="admin-stat">
+        <div class="admin-stat-num" id="admin-stat-complete">—</div>
+        <div class="admin-stat-label">完走目標数</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stamp list section -->
+  <div class="admin-section">
+    <div class="admin-section-title">スタンプ一覧・編集</div>
+    <div class="admin-stamp-list" id="admin-stamp-list"></div>
+    <button class="btn-add-stamp" onclick="adminAddStamp()">＋ スタンプを追加する</button>
+  </div>
+
+  <!-- Global settings -->
+  <div class="admin-section" style="margin-top:24px;">
+    <div class="admin-section-title">全体設定</div>
+    <div class="admin-settings-grid">
+
+      <!-- TEXT EDITING: TITLE SCREEN -->
+      <div class="admin-setting-row">
+        <div class="admin-setting-label">✏️ タイトル画面</div>
+        <div class="admin-setting-sub">トップページの全文言を変更できます</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div class="admin-field">
+            <div class="admin-label">バッジテキスト（上部小ラベル）</div>
+            <input class="admin-input" id="setting-title-badge" placeholder="📍 WebAR STAMP RALLY" />
+          </div>
+          <div class="admin-field">
+            <div class="admin-label">メインロゴ（改行は \n で入力）</div>
+            <input class="admin-input" id="setting-title-logo" placeholder="AR\nスタンプラリー" />
+          </div>
+          <div class="admin-field">
+            <div class="admin-label">サブタイトル</div>
+            <input class="admin-input" id="setting-title-sub" placeholder="文化祭 2024 ／ 校内探検マップ" />
+          </div>
+          <div class="admin-field">
+            <div class="admin-label">スタートボタン</div>
+            <input class="admin-input" id="setting-btn-start" placeholder="スタート！" />
+          </div>
+          <div class="admin-field">
+            <div class="admin-label">遊び方リンク</div>
+            <input class="admin-input" id="setting-howto-link" placeholder="遊び方を見る" />
+          </div>
+        </div>
+        <button class="btn-admin-action" style="margin-top:10px;" onclick="saveTextSettings()">保存</button>
+      </div>
+
+      <!-- TEXT EDITING: HOWTO MODAL -->
+      <div class="admin-setting-row">
+        <div class="admin-setting-label">📖 遊び方モーダル</div>
+        <div class="admin-setting-sub">ポップアップに表示される説明文を変更できます</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div class="admin-field">
+            <div class="admin-label">モーダルタイトル</div>
+            <input class="admin-input" id="setting-howto-modal-title" placeholder="📖 遊び方" />
+          </div>
+          <div class="admin-field">
+            <div class="admin-label">ステップ1 タイトル / 説明</div>
+            <input class="admin-input" id="setting-howto-1-title" placeholder="マップを確認する" style="margin-bottom:6px;" />
+            <input class="admin-input" id="setting-howto-1-body" placeholder="スタンプポイントの場所を確認しよう！" />
+          </div>
+          <div class="admin-field">
+            <div class="admin-label">ステップ2 タイトル / 説明</div>
+            <input class="admin-input" id="setting-howto-2-title" placeholder="マーカーを見つける" style="margin-bottom:6px;" />
+            <input class="admin-input" id="setting-howto-2-body" placeholder="各スポットにあるARマーカーを探してね。" />
+          </div>
+          <div class="admin-field">
+            <div class="admin-label">ステップ3 タイトル / 説明</div>
+            <input class="admin-input" id="setting-howto-3-title" placeholder="カメラでスキャン" style="margin-bottom:6px;" />
+            <input class="admin-input" id="setting-howto-3-body" placeholder="スキャンボタンを押してマーカーにかざそう！" />
+          </div>
+          <div class="admin-field">
+            <div class="admin-label">ステップ4 タイトル / 説明</div>
+            <input class="admin-input" id="setting-howto-4-title" placeholder="全部集めて特典をゲット！" style="margin-bottom:6px;" />
+            <input class="admin-input" id="setting-howto-4-body" placeholder="全部集めると文化祭限定の特典がもらえるよ 🎉" />
+          </div>
+          <div class="admin-field">
+            <div class="admin-label">閉じるボタン</div>
+            <input class="admin-input" id="setting-howto-close-btn" placeholder="閉じる" />
+          </div>
+        </div>
+        <button class="btn-admin-action" style="margin-top:10px;" onclick="saveTextSettings()">保存</button>
+      </div>
+
+      <!-- TEXT EDITING: MAP SCREEN -->
+      <div class="admin-setting-row">
+        <div class="admin-setting-label">🗺️ マップ画面</div>
+        <div class="admin-setting-sub">スタンプマップ画面の文言を変更できます</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div class="admin-field">
+            <div class="admin-label">マップタイトル</div>
+            <input class="admin-input" id="setting-map-title" placeholder="📍 スタンプマップ" />
+          </div>
+          <div class="admin-field">
+            <div class="admin-label">スキャンボタン</div>
+            <input class="admin-input" id="setting-btn-scan" placeholder="📷 スキャンする" />
+          </div>
+          <div class="admin-field">
+            <div class="admin-label">スタンプ取得済みラベル</div>
+            <input class="admin-input" id="setting-stamp-collected-label" placeholder="✓ 取得済み" />
+          </div>
+          <div class="admin-field">
+            <div class="admin-label">スタンプ未取得ヒント</div>
+            <input class="admin-input" id="setting-stamp-hint" placeholder="マーカーを探してスキャンしよう！" />
+          </div>
+          <div class="admin-field">
+            <div class="admin-label">ナビ「マップ」ラベル</div>
+            <input class="admin-input" id="setting-nav-map" placeholder="マップ" />
+          </div>
+          <div class="admin-field">
+            <div class="admin-label">ナビ「遊び方」ラベル</div>
+            <input class="admin-input" id="setting-nav-howto" placeholder="遊び方" />
+          </div>
+        </div>
+        <button class="btn-admin-action" style="margin-top:10px;" onclick="saveTextSettings()">保存</button>
+      </div>
+
+      <!-- TEXT EDITING: AR SCREEN -->
+      <div class="admin-setting-row">
+        <div class="admin-setting-label">📷 ARカメラ画面</div>
+        <div class="admin-setting-sub">スキャン中に表示される文言を変更できます</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div class="admin-field">
+            <div class="admin-label">スキャン中ステータステキスト</div>
+            <input class="admin-input" id="setting-ar-status" placeholder="ARマーカーにカメラを向けてください" />
+          </div>
+          <div class="admin-field">
+            <div class="admin-label">マーカー検出バナー（「MARKER FOUND!」）</div>
+            <input class="admin-input" id="setting-ar-detected-label" placeholder="MARKER FOUND!" />
+          </div>
+          <div class="admin-field">
+            <div class="admin-label">閉じるボタン</div>
+            <input class="admin-input" id="setting-ar-close-btn" placeholder="✕ 閉じる" />
+          </div>
+        </div>
+        <button class="btn-admin-action" style="margin-top:10px;" onclick="saveTextSettings()">保存</button>
+      </div>
+
+      <!-- TEXT EDITING: STAMP COLLECT SCREEN -->
+      <div class="admin-setting-row">
+        <div class="admin-setting-label">✨ スタンプ獲得画面</div>
+        <div class="admin-setting-sub">スタンプ取得時に表示される文言を変更できます</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div class="admin-field">
+            <div class="admin-label">獲得タイトル（上部ラベル）</div>
+            <input class="admin-input" id="setting-stamp-get-title" placeholder="✨ スタンプ獲得！" />
+          </div>
+          <div class="admin-field">
+            <div class="admin-label">マップに戻るボタン</div>
+            <input class="admin-input" id="setting-btn-back-map" placeholder="マップに戻る" />
+          </div>
+        </div>
+        <button class="btn-admin-action" style="margin-top:10px;" onclick="saveTextSettings()">保存</button>
+      </div>
+
+      <!-- TEXT EDITING: COMPLETE SCREEN -->
+      <div class="admin-setting-row">
+        <div class="admin-setting-label">🌟 完走画面</div>
+        <div class="admin-setting-sub">コンプリート時に表示される文言を変更できます</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div class="admin-field">
+            <div class="admin-label">星アイコン（絵文字）</div>
+            <input class="admin-input" id="setting-complete-star" placeholder="🌟" />
+          </div>
+          <div class="admin-field">
+            <div class="admin-label">タイトル</div>
+            <input class="admin-input" id="setting-complete-title" placeholder="コンプリート！" />
+          </div>
+          <div class="admin-field">
+            <div class="admin-label">サブタイトル</div>
+            <input class="admin-input" id="setting-complete-sub" placeholder="全5つのスタンプを集めました！" />
+          </div>
+          <div class="admin-field">
+            <div class="admin-label">クーポンラベル（「🎁 特典クーポン」）</div>
+            <input class="admin-input" id="setting-coupon-label" placeholder="🎁 特典クーポン" />
+          </div>
+          <div class="admin-field">
+            <div class="admin-label">特典テキスト</div>
+            <input class="admin-input" id="setting-coupon-title" placeholder="例：模擬店 1品無料！" />
+          </div>
+          <div class="admin-field">
+            <div class="admin-label">注記</div>
+            <input class="admin-input" id="setting-coupon-note" placeholder="例：文化祭本部に見せてね（本日限り）" />
+          </div>
+        </div>
+        <button class="btn-admin-action" style="margin-top:10px;" onclick="saveGlobalSettings()">保存</button>
+      </div>
+
+      <div class="admin-setting-row">
+        <div class="admin-setting-label">🔑 パスワード変更</div>
+        <div class="admin-setting-sub">現在のパスワード：設定済み</div>
+        <div class="admin-password-change">
+          <input class="admin-input" id="setting-new-password" type="password" placeholder="新しいパスワード" />
+          <button class="btn-admin-action" onclick="changeAdminPassword()">変更</button>
+        </div>
+      </div>
+
+      <div class="admin-setting-row">
+        <div class="admin-setting-label">📤 データのエクスポート / インポート</div>
+        <div class="admin-setting-sub">スタンプ設定をJSON形式でバックアップ・復元できます</div>
+        <button class="btn-admin-action" onclick="exportData()">📋 コピー</button>
+        <button class="btn-admin-action" onclick="importData()">📥 インポート</button>
+        <div class="admin-export-area" id="admin-export-area">エクスポートボタンを押してください</div>
+      </div>
+
+      <div class="admin-setting-row">
+        <div class="admin-setting-label">🎯 ARマーカーファイル (.mind)</div>
+        <div class="admin-setting-sub">MindAR Compilerで生成した .mind ファイルをアップロードします。<a href="https://hiukim.github.io/mind-ar-js-doc/tools/compile" target="_blank" style="color:var(--accent);">コンパイルツール →</a></div>
+        <div id="mind-file-status" style="
+          margin-bottom:12px; padding:10px 14px; border-radius:10px;
+          background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08);
+          font-size:13px; color:rgba(255,255,255,0.5);
+        ">📂 未アップロード（デモモードで動作中）</div>
+        <label style="
+          display:block; width:100%;
+          background:linear-gradient(135deg,#6366f1,#8b5cf6);
+          color:#fff; border-radius:12px; padding:12px;
+          font-size:14px; font-weight:700; text-align:center;
+          cursor:pointer; font-family:'Zen Maru Gothic',sans-serif;
+        ">
+          📁 .mind ファイルを選択
+          <input type="file" accept=".mind" style="display:none;" onchange="uploadMindFile(this)" />
+        </label>
+        <button class="btn-danger" style="margin-top:10px;width:100%;" onclick="deleteMindFile()">🗑 マーカーファイルを削除（デモモードに戻す）</button>
+      </div>
+
+      <div class="admin-danger-zone">
+        <div class="admin-setting-label" style="color:#fca5a5;">⚠️ 危険な操作</div>
+        <div class="admin-setting-sub">この操作は元に戻せません</div>
+        <button class="btn-danger" onclick="adminResetAllProgress()">🔄 この端末の進捗をリセット</button>
+        <div style="font-size:11px;color:rgba(255,255,255,0.35);margin:-6px 0 8px;">※ 自分のスマホの進捗だけ消えます。他の参加者には影響しません。</div>
+        <button class="btn-danger" onclick="adminNextYearReset()" style="background:linear-gradient(135deg,#f59e0b,#d97706);">🗓️ 翌年用リセット（年度更新）</button>
+        <div style="font-size:11px;color:rgba(255,255,255,0.35);margin:-6px 0 8px;">※ スタンプ・設定はそのまま。参加者の進捗は次回アクセス時に自動リセット。</div>
+        <button class="btn-danger" onclick="adminResetToDefault()">↩️ 初期データに戻す（全端末反映）</button>
+        <div style="font-size:11px;color:rgba(255,255,255,0.35);margin:-6px 0 0;">※ スタンプ・設定を初期状態に戻し、全端末に反映します。</div>
+      </div>
+
+      <div class="admin-setting-row" style="border:1px solid rgba(6,255,165,0.2); background:rgba(6,255,165,0.04);">
+        <div class="admin-setting-label" style="color:var(--accent);">🛡️ 長期安定運用ガイド</div>
+        <div class="admin-setting-sub" style="color:rgba(255,255,255,0.5);">数年単位で安定して動かすための情報</div>
+        <div style="font-size:12px; line-height:1.8; color:rgba(255,255,255,0.6);">
+          <div style="margin-bottom:10px;">
+            <strong style="color:#fff;">✅ iOS / Android 両対応</strong><br>
+            HTTPS（GitHub Pages等）でホストすれば両OSのSafari・Chromeで動作します。<br>
+            iOSはSafariを推奨（カメラ権限が最も安定）。
+          </div>
+          <div style="margin-bottom:10px;">
+            <strong style="color:#fff;">📦 CDN依存リスクの解消方法</strong><br>
+            以下2ファイルをダウンロードして<code style="background:rgba(255,255,255,0.1);padding:1px 4px;border-radius:3px;">/libs/</code>フォルダに置くと、CDN不要のオフライン動作になります：<br>
+            <a href="https://aframe.io/releases/1.5.0/aframe.min.js" target="_blank" style="color:var(--accent);">aframe@1.5.0</a> ／
+            <a href="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js" target="_blank" style="color:var(--accent);">mind-ar@1.2.5</a>
+          </div>
+          <div style="margin-bottom:10px;">
+            <strong style="color:#fff;">💾 データのバックアップ</strong><br>
+            「エクスポート」でJSONを保存しておくと、端末変更やデータ消失時に復元できます。
+          </div>
+          <div>
+            <strong style="color:#fff;">🔄 毎年の更新作業</strong><br>
+            管理者画面の「テキスト編集」でイベント名・年度・特典内容を更新するだけで翌年も使えます。
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM MODAL -->
+<div id="confirm-modal" style="
+  position:fixed; inset:0; z-index:3000;
+  background:rgba(0,0,0,0.8); backdrop-filter:blur(8px);
+  display:none; align-items:center; justify-content:center; padding:24px;
+">
+  <div style="
+    background:#1a1a2e; border:1px solid rgba(239,68,68,0.3);
+    border-radius:24px; padding:28px 24px; width:100%; max-width:340px; text-align:center;
+  ">
+    <div id="confirm-icon" style="font-size:40px; margin-bottom:12px;">⚠️</div>
+    <div id="confirm-title" style="font-size:18px; font-weight:900; margin-bottom:8px;"></div>
+    <div id="confirm-body" style="font-size:13px; color:rgba(255,255,255,0.5); margin-bottom:28px; line-height:1.6; white-space:pre-line;"></div>
+    <div style="display:flex; gap:10px;">
+      <button onclick="closeConfirmModal()" style="
+        flex:1; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15);
+        color:#fff; border-radius:14px; padding:14px; font-size:15px; font-weight:700;
+        cursor:pointer; font-family:'Zen Maru Gothic',sans-serif;
+      ">キャンセル</button>
+      <button id="confirm-ok-btn" style="
+        flex:1; background:linear-gradient(135deg,#ef4444,#dc2626);
+        border:none; color:#fff; border-radius:14px; padding:14px;
+        font-size:15px; font-weight:700; cursor:pointer;
+        font-family:'Zen Maru Gothic',sans-serif;
+      ">実行する</button>
+    </div>
+  </div>
+</div>
+
+<!-- SUCCESS MODAL -->
+<div id="success-modal" style="
+  position:fixed; inset:0; z-index:3000;
+  background:rgba(0,0,0,0.7); backdrop-filter:blur(8px);
+  display:none; align-items:center; justify-content:center; padding:24px;
+">
+  <div style="
+    background:#1a1a2e; border:1px solid rgba(6,255,165,0.3);
+    border-radius:24px; padding:32px 24px; width:100%; max-width:300px; text-align:center;
+  ">
+    <div style="font-size:48px; margin-bottom:12px;">✅</div>
+    <div id="success-message" style="font-size:17px; font-weight:900; color:var(--accent);"></div>
+  </div>
+</div>
+
+<!--
+  ===== ライブラリについて（長期運用メモ）=====
+  CDNがダウンするリスクがある場合は、以下2ファイルをダウンロードして
+  GitHubリポジトリに同梱し、パスを ./aframe.min.js 等に変更してください。
+  ダウンロード先:
+    A-Frame: https://aframe.io/releases/1.5.0/aframe.min.js
+    MindAR:  https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js
+  バージョンは固定済みのため、CDNが存続する限り動作します。
+  =============================================
+-->
+<!--
+  ★ 長期安定運用メモ ★
+  バージョン完全固定: aframe@1.5.0 + mind-ar@1.2.5（動作確認済）
+  CDNが将来消えるリスク対策：
+    → このindex.htmlと同じ場所に /libs/ フォルダを作り
+       aframe.min.js と mindar-image-aframe.prod.js を置けば
+       CDN不要のオフライン完全動作になる（管理者画面から案内）
+-->
+
+<!-- Firebase SDK (バージョン固定 10.12.2) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
+<script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+
+<script>
+/* ============================================================
+   ★ FIREBASE 設定 ★
+   Firebase ConsoleのfirebaseConfigをここに貼り付けてください。
+   ============================================================ */
+const FIREBASE_CONFIG = {
+  apiKey:            "AIzaSyBkIXZ8bQ_iS6yaPRl0tZ5u-vZIKH4B_Sk",
+  authDomain:        "test-7914b.firebaseapp.com",
+  databaseURL:       "https://test-7914b-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId:         "test-7914b",
+  storageBucket:     "test-7914b.firebasestorage.app",
+  messagingSenderId: "572257078495",
+  appId:             "1:572257078495:web:c48249166949443c082d6a"
+};
+
+/* ============================================================
+   DB抽象化レイヤー
+   Firebase → 他サービスへの移行時はここだけ変更すればOK
+   ============================================================ */
+const DB = (() => {
+  let _db = null;
+  let _listeners = {};
+  let _isReady = false;
+  const _readyCallbacks = [];
+
+  function _init() {
+    try {
+      if (!FIREBASE_CONFIG.apiKey || FIREBASE_CONFIG.apiKey === 'YOUR_API_KEY') {
+        console.warn('[DB] Firebase未設定 → ローカルモードで動作');
+        _isReady = true;
+        _readyCallbacks.forEach(fn => fn());
+        return;
+      }
+      firebase.initializeApp(FIREBASE_CONFIG);
+      _db = firebase.database();
+      _isReady = true;
+      _readyCallbacks.forEach(fn => fn());
+      console.log('[DB] Firebase接続成功');
+    } catch(e) {
+      console.error('[DB] Firebase初期化エラー:', e);
+      _isReady = true;
+      _readyCallbacks.forEach(fn => fn());
+    }
+  }
+
+  function onReady(fn) {
+    if (_isReady) fn(); else _readyCallbacks.push(fn);
+  }
+
+  // Firebaseから値を1回取得（タイムアウト付き）
+  async function get(path, timeoutMs = 5000) {
+    if (!_db) return null;
+    try {
+      const result = await Promise.race([
+        _db.ref(path).get(),
+        new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('timeout')), timeoutMs)
+        )
+      ]);
+      return result.exists() ? result.val() : null;
+    } catch(e) {
+      console.warn('[DB] get timeout/error:', path, e.message);
+      return null;
+    }
+  }
+
+  // Firebaseに値をセット
+  async function set(path, value) {
+    if (!_db) return false;
+    try {
+      await _db.ref(path).set(value);
+      return true;
+    } catch(e) { console.error('[DB] set error:', path, e); return false; }
+  }
+
+  // リアルタイムリスナー登録（設定変更を全端末に即反映）
+  function listen(path, callback) {
+    if (!_db) return;
+    if (_listeners[path]) _db.ref(path).off('value', _listeners[path]);
+    const handler = snap => callback(snap.exists() ? snap.val() : null);
+    _listeners[path] = handler;
+    _db.ref(path).on('value', handler);
+  }
+
+  // リスナー解除
+  function unlisten(path) {
+    if (!_db || !_listeners[path]) return;
+    _db.ref(path).off('value', _listeners[path]);
+    delete _listeners[path];
+  }
+
+  function isConnected() { return !!_db; }
+
+  _init();
+  return { onReady, get, set, listen, unlisten, isConnected };
+})();
+
+/* ============================================================
+   パスワードハッシュ化ユーティリティ (SHA-256 / Web Crypto API)
+   iOSのSafari含む全ブラウザ対応
+   ============================================================ */
+async function sha256(text) {
+  const buf = await crypto.subtle.digest('SHA-256',
+    new TextEncoder().encode(text));
+  return Array.from(new Uint8Array(buf))
+    .map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+/* ============================================================
+   STAMP DATA
+   各スタンプの情報。マーカーIndex(0-4)はmind fileの順番と対応
+   ============================================================ */
+const STAMPS = [
+  {
+    id: 0, number: '1',
+    emoji: '🏫',
+    name: 'エントランス',
+    location: '📍 正面玄関',
+    message: '文化祭へようこそ！素晴らしい一日をお楽しみください！',
+    color: '#ff6b35',
+    markerIndex: 0,
+  },
+  {
+    id: 1, number: '2',
+    emoji: '🎭',
+    name: '演劇ステージ',
+    location: '📍 体育館',
+    message: 'ここで熱い演劇が繰り広げられます。舞台裏を覗いてみては？',
+    color: '#a855f7',
+    markerIndex: 1,
+  },
+  {
+    id: 2, number: '3',
+    emoji: '🎸',
+    name: '軽音部ライブ',
+    location: '📍 音楽室棟',
+    message: 'ロックなサウンドに包まれてスタンプゲット！音楽の力を感じよう！',
+    color: '#06ffa5',
+    markerIndex: 2,
+  },
+  {
+    id: 3, number: '4',
+    emoji: '🍱',
+    name: '模擬店エリア',
+    location: '📍 中央広場',
+    message: '美味しそうなお店がいっぱい！お腹が空いたらここへ！',
+    color: '#ffd23f',
+    markerIndex: 3,
+  },
+  {
+    id: 4, number: '5',
+    emoji: '🌸',
+    name: '展示ギャラリー',
+    location: '📍 美術室',
+    message: '生徒の力作が揃っています。芸術の秋を感じよう！',
+    color: '#ef4444',
+    markerIndex: 4,
+  }
+];
+
+/* ============================================================
+   STATE
+   ============================================================ */
+let collected = JSON.parse(localStorage.getItem('ar_rally_collected') || '[]');
+
+let scanTimeout = null;
+
+/* ============================================================
+   SCREEN MANAGEMENT
+   ============================================================ */
+function showScreen(name) {
+  // 完走済みの場合は完走画面から出られないようにする（admin除く）
+  const isComplete = STAMPS.length > 0 && collected.length > 0 && collected.length >= STAMPS.length;
+  if (isComplete && name !== 'admin') return;
+
+  const target = document.getElementById(`screen-${name}`);
+  if (!target) { console.error('[showScreen] 存在しない画面:', name); return; }
+
+  document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+  target.classList.remove('hidden');
+  target.offsetHeight; // reflow
+
+  const nav = document.getElementById('bottom-nav');
+  if (nav) nav.style.display = (name === 'map') ? 'flex' : 'none';
+
+  if (name === 'map') renderMap();
+}
+
+/* ============================================================
+   MAP RENDER
+   ============================================================ */
+function renderMap() {
+  const list = document.getElementById('stamp-list');
+  if (!list) return;
+  list.innerHTML = '';
+
+  const collectedLabel = getSetting('stampCollectedLabel');
+  const hintLabel = getSetting('stampHint');
+
+  STAMPS.forEach(stamp => {
+    const isCollected = collected.includes(stamp.id);
+    const card = document.createElement('div');
+    card.className = `stamp-card${isCollected ? ' collected' : ''}`;
+    card.innerHTML = `
+      <div class="stamp-card-icon" style="border-color:${isCollected ? 'var(--accent)' : stamp.color}20;">
+        <span>${stamp.emoji}</span>
+      </div>
+      <div class="stamp-card-info">
+        <div class="stamp-card-name">${stamp.name}</div>
+        <div class="stamp-card-location">${stamp.location}</div>
+        ${isCollected
+          ? `<div class="stamp-card-hint" style="color:var(--accent);">${collectedLabel}</div>`
+          : `<div class="stamp-card-hint">${hintLabel}</div>`}
+      </div>
+      <div class="stamp-card-badge">${isCollected ? '✓' : (stamp.number !== undefined ? stamp.number : (stamp.id + 1))}</div>
+    `;
+    list.appendChild(card);
+  });
+
+  const pct = (collected.length / STAMPS.length) * 100;
+  document.getElementById('progress-count').textContent = `${collected.length} / ${STAMPS.length}`;
+  document.getElementById('progress-bar').style.width = pct + '%';
+}
+
+/* ============================================================
+   HOWTO MODAL
+   ============================================================ */
+function openHowtoModal() {
+  document.getElementById('howto-modal').style.display = 'flex';
+}
+function closeHowtoModal() {
+  document.getElementById('howto-modal').style.display = 'none';
+}
+
+/* ============================================================
+   START RALLY
+   ============================================================ */
+function startRally() {
+  // すでにスタート済みの場合は確認なしでマップへ
+  if (rallyStartTime) {
+    showScreen('map');
+    return;
+  }
+  // 初回スタート: 確認モーダルを表示
+  showConfirmModal(
+    '🚀',
+    'スタンプラリーを始めますか？',
+    'OKを押すと同時にタイマーがスタートします！\nスタンプを全部集めてゴールを目指そう！',
+    () => {
+      rallyStartTime = Date.now();
+      localStorage.setItem('ar_rally_start', rallyStartTime);
+      startStopwatch();
+      showScreen('map');
+    },
+    'スタート！',
+    'linear-gradient(135deg,#ff6b35,#ff3f8e)'
+  );
+}
+
+/* ============================================================
+   長押しで「タイトルへ戻る」ボタン処理
+   ============================================================ */
+let _backHoldTimer = null;
+let _backHoldRaf = null;
+let _backHoldStart = null;
+const BACK_HOLD_MS = 1500;
+
+function startBackHold(e) {
+  e.preventDefault();
+  const arc = document.getElementById('back-hold-arc');
+  const ring = document.getElementById('back-hold-ring');
+  if (ring) ring.style.display = 'block';
+  _backHoldStart = Date.now();
+
+  function tick() {
+    const elapsed = Date.now() - _backHoldStart;
+    const pct = Math.min(elapsed / BACK_HOLD_MS, 1);
+    const circumference = 125.6;
+    if (arc) arc.style.strokeDashoffset = circumference * (1 - pct);
+    if (pct < 1) {
+      _backHoldRaf = requestAnimationFrame(tick);
+    }
+  }
+  _backHoldRaf = requestAnimationFrame(tick);
+
+  _backHoldTimer = setTimeout(() => {
+    cancelBackHold();
+    // タイトルに戻る（進捗はリセットしない）
+    stopStopwatch();
+    showScreen('title');
+  }, BACK_HOLD_MS);
+}
+
+function cancelBackHold() {
+  if (_backHoldTimer) { clearTimeout(_backHoldTimer); _backHoldTimer = null; }
+  if (_backHoldRaf) { cancelAnimationFrame(_backHoldRaf); _backHoldRaf = null; }
+  const arc = document.getElementById('back-hold-arc');
+  const ring = document.getElementById('back-hold-ring');
+  if (arc) arc.style.strokeDashoffset = '125.6';
+  if (ring) ring.style.display = 'none';
+}
+
+/* ============================================================
+   STOPWATCH
+   ============================================================ */
+let rallyStartTime = null;
+let rallyEndTime = null;
+let stopwatchInterval = null;
+
+function startStopwatch() {
+  if (stopwatchInterval) clearInterval(stopwatchInterval);
+  stopwatchInterval = setInterval(() => {
+    const el = document.getElementById('stopwatch-display');
+    if (el && rallyStartTime) {
+      el.textContent = '⏱ ' + formatElapsed(Date.now() - rallyStartTime);
+    }
+  }, 1000);
+}
+function stopStopwatch() {
+  if (stopwatchInterval) { clearInterval(stopwatchInterval); stopwatchInterval = null; }
+}
+function formatElapsed(ms) {
+  const totalSec = Math.floor(ms / 1000);
+  const hours = Math.floor(totalSec / 3600);
+  const min = Math.floor((totalSec % 3600) / 60);
+  const sec = totalSec % 60;
+  if (hours > 0) {
+    return `${hours}:${String(min).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+  }
+  return `${String(min).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+}
+
+function simulateScan() {
+  const uncollected = STAMPS.filter(s => !collected.includes(s.id));
+  if (uncollected.length === 0) {
+    // Already all collected
+    setTimeout(() => {
+      closeAR();
+      showScreen('map');
+    }, 1500);
+    return;
+  }
+
+  const delay = 2000 + Math.random() * 1500;
+  scanTimeout = setTimeout(() => {
+    const stamp = uncollected[Math.floor(Math.random() * uncollected.length)];
+    showDetectedBanner(stamp);
+    setTimeout(() => collectStamp(stamp), 1800);
+  }, delay);
+}
+
+function showDetectedBanner(stamp) {
+  document.getElementById('ar-detected-emoji').textContent = stamp.emoji;
+  document.getElementById('ar-detected-name').textContent = stamp.name;
+  document.getElementById('ar-detected-banner').classList.add('show');
+}
+
+function closeAR() {
+  if (scanTimeout) clearTimeout(scanTimeout);
+  document.getElementById('ar-detected-banner').classList.remove('show');
+  stopARCamera();
+  showScreen('map');
+}
+
+function collectStamp(stamp) {
+  if (!collected.includes(stamp.id)) {
+    collected.push(stamp.id);
+    localStorage.setItem('ar_rally_collected', JSON.stringify(collected));
+  }
+
+  document.getElementById('ar-detected-banner').classList.remove('show');
+
+  // Show collect screen
+  document.getElementById('stamp-collect-icon').textContent = stamp.emoji;
+  document.getElementById('stamp-collect-name').textContent = stamp.name;
+  document.getElementById('stamp-collect-loc').textContent = stamp.location;
+  document.getElementById('stamp-collect-msg').textContent = stamp.message;
+  showScreen('stamp');
+}
+
+function afterCollect() {
+  if (collected.length >= STAMPS.length) {
+    showComplete();
+  } else {
+    showScreen('map');
+  }
+}
+
+/* ============================================================
+   COMPLETE
+   ============================================================ */
+function showComplete() {
+  rallyEndTime = Date.now();
+  stopStopwatch();
+  showScreen('complete');
+
+  // Show elapsed time
+  const badge = document.getElementById('complete-time-badge');
+  if (rallyStartTime && badge) {
+    badge.textContent = `⏱ タイム: ${formatElapsed(rallyEndTime - rallyStartTime)}`;
+  }
+
+  // Render stamps row
+  const row = document.getElementById('complete-stamps-row');
+  row.innerHTML = '';
+  STAMPS.forEach((s, i) => {
+    const div = document.createElement('div');
+    div.className = 'complete-stamp-item';
+    div.textContent = s.emoji;
+    div.style.animationDelay = (i * 0.1) + 's';
+    row.appendChild(div);
+  });
+
+  // Confetti
+  launchConfetti();
+}
+
+function launchConfetti() {
+  const container = document.getElementById('confetti-container');
+  container.innerHTML = '';
+  const colors = ['#ff6b35','#ffd23f','#06ffa5','#a855f7','#ef4444','#fff'];
+  for (let i = 0; i < 60; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.cssText = `
+      left: ${Math.random() * 100}%;
+      background: ${colors[Math.floor(Math.random() * colors.length)]};
+      animation-duration: ${2 + Math.random() * 3}s;
+      animation-delay: ${Math.random() * 2}s;
+      width: ${6 + Math.random() * 10}px;
+      height: ${6 + Math.random() * 10}px;
+      border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
+      opacity: ${0.6 + Math.random() * 0.4};
+    `;
+    container.appendChild(piece);
+  }
+}
+
+function resetAll() {
+  collected = [];
+  rallyStartTime = null;
+  rallyEndTime = null;
+  stopStopwatch();
+  const el = document.getElementById('stopwatch-display');
+  if (el) el.textContent = '⏱ --:--';
+  localStorage.removeItem('ar_rally_collected');
+  localStorage.removeItem('ar_rally_start');
+  // ガードを回避して強制的にタイトルへ
+  document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+  document.getElementById('screen-title').classList.remove('hidden');
+  document.getElementById('bottom-nav').style.display = 'none';
+}
+
+
+/* ============================================================
+   INDEXEDDB — .mind ファイル保存
+   ============================================================ */
+const IDB_NAME = 'ar_rally_db';
+
+function openDB() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(IDB_NAME, 3);
+    req.onupgradeneeded = e => {
+      const db = e.target.result;
+      if (!db.objectStoreNames.contains('mind_files')) db.createObjectStore('mind_files');
+      if (!db.objectStoreNames.contains('patt_files')) db.createObjectStore('patt_files');
+    };
+    req.onsuccess = e => resolve(e.target.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+async function saveMindFileToDB(blob) {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction('mind_files', 'readwrite');
+    tx.objectStore('mind_files').put(blob, 'targets');
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+  });
+}
+
+async function getMindFileFromDB() {
+  try {
+    const db = await openDB();
+    return new Promise((resolve) => {
+      const tx = db.transaction('mind_files', 'readonly');
+      const req = tx.objectStore('mind_files').get('targets');
+      req.onsuccess = () => resolve(req.result || null);
+      req.onerror = () => resolve(null);
+    });
+  } catch { return null; }
+}
+
+async function deleteMindFileFromDB() {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction('mind_files', 'readwrite');
+    tx.objectStore('mind_files').delete('targets');
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+  });
+}
+
+// --- AR 起動・停止 ---
+let mindBlobUrl = null;
+
+function startAR() {
+  showScreen('ar');
+  const statusEl = document.getElementById('ar-status-text');
+
+  getMindFileFromDB().then(blob => {
+    if (blob) {
+      startARReal(blob);
+    } else {
+      if (statusEl) statusEl.innerHTML = '<span style="color:var(--secondary);">⚠️ デモモード（マーカー未登録）</span>';
+      simulateScan();
+    }
+  }).catch(() => {
+    if (statusEl) statusEl.innerHTML = '<span style="color:var(--secondary);">⚠️ デモモード</span>';
+    simulateScan();
+  });
+}
+
+async function startARReal(mindBlob) {
+  const statusEl = document.getElementById('ar-status-text');
+  const container = document.getElementById('ar-container');
+  if (statusEl) statusEl.innerHTML = '<span class="blink">●</span> <span>カメラ起動中...</span>';
+
+  try {
+    const old = container.querySelector('a-scene');
+    if (old) old.parentNode.removeChild(old);
+    if (mindBlobUrl) { URL.revokeObjectURL(mindBlobUrl); mindBlobUrl = null; }
+
+    mindBlobUrl = URL.createObjectURL(mindBlob);
+
+    const scene = document.createElement('a-scene');
+    scene.setAttribute('mindar-image', `imageTargetSrc: ${mindBlobUrl}; uiLoading: no; uiError: no; uiScanning: no;`);
+    scene.setAttribute('color-space', 'sRGB');
+    scene.setAttribute('renderer', 'colorManagement: true; physicallyCorrectLights: true;');
+    scene.setAttribute('vr-mode-ui', 'enabled: false');
+    scene.setAttribute('device-orientation-permission-ui', 'enabled: false');
+    scene.setAttribute('embedded', '');
+
+    const assets = document.createElement('a-assets');
+    scene.appendChild(assets);
+
+    const cam = document.createElement('a-camera');
+    cam.setAttribute('position', '0 0 0');
+    cam.setAttribute('look-controls', 'enabled: false');
+    scene.appendChild(cam);
+
+    STAMPS.forEach(stamp => {
+      const target = document.createElement('a-entity');
+      target.setAttribute('mindar-image-target', `targetIndex: ${stamp.markerIndex}`);
+      let detected = false;
+      target.addEventListener('targetFound', () => {
+        if (detected || collected.includes(stamp.id)) return;
+        detected = true;
+        showDetectedBanner(stamp);
+        setTimeout(() => {
+          stopARCamera();
+          collectStamp(stamp);
+        }, 1800);
+      });
+      scene.appendChild(target);
+    });
+
+    container.appendChild(scene);
+
+    scene.addEventListener('loaded', () => {
+      if (statusEl) statusEl.innerHTML = `<span class="blink">●</span> <span>${getSetting('arStatus')}</span>`;
+    }, { once: true });
+
+  } catch(e) {
+    console.error('AR error:', e);
+    statusEl.innerHTML = '<span style="color:#ef4444;">❌ カメラの起動に失敗しました</span>';
+  }
+}
+
+function stopARCamera() {
+  try {
+    const container = document.getElementById('ar-container');
+    const scene = container ? container.querySelector('a-scene') : null;
+    if (scene) {
+      const sys = scene.systems && scene.systems['mindar-image-system'];
+      if (sys && sys.stop) sys.stop();
+      scene.parentNode.removeChild(scene);
+    }
+    // iOS Safari: ストリームのトラックを明示的に停止しないとカメラインジケーターが消えない
+    try {
+      const videos = document.querySelectorAll('video');
+      videos.forEach(v => {
+        if (v.srcObject) {
+          v.srcObject.getTracks().forEach(t => t.stop());
+          v.srcObject = null;
+        }
+      });
+    } catch(e) { /* ignore */ }
+    if (mindBlobUrl) { URL.revokeObjectURL(mindBlobUrl); mindBlobUrl = null; }
+  } catch(e) { console.warn('AR stop:', e); }
+}
+
+
+// --- 管理者画面UI ---
+async function uploadMindFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  try {
+    await saveMindFileToDB(file);
+    showSuccessModal(`✅ ${file.name} を保存しました`);
+    refreshMindFileStatus();
+  } catch(e) {
+    showSuccessModal('❌ 保存に失敗しました');
+  }
+  input.value = '';
+}
+
+async function deleteMindFile() {
+  showConfirmModal('🗑', 'マーカーファイルを削除', '削除するとデモモードに戻ります。', async () => {
+    await deleteMindFileFromDB();
+    showSuccessModal('🔄 デモモードに戻しました');
+    refreshMindFileStatus();
+  });
+}
+
+async function refreshMindFileStatus() {
+  const el = document.getElementById('mind-file-status');
+  if (!el) return;
+  const blob = await getMindFileFromDB();
+  if (blob) {
+    el.style.color = 'var(--accent)';
+    el.style.borderColor = 'rgba(6,255,165,0.3)';
+    el.style.background = 'rgba(6,255,165,0.06)';
+    el.textContent = `✅ targets.mind (${(blob.size/1024).toFixed(0)} KB) — 本番ARモードで動作中`;
+  } else {
+    el.style.color = 'rgba(255,255,255,0.5)';
+    el.style.borderColor = 'rgba(255,255,255,0.08)';
+    el.style.background = 'rgba(255,255,255,0.04)';
+    el.textContent = '📂 未アップロード（デモモードで動作中）';
+  }
+}
+
+// patt関連の残骸（呼び出し元との互換のため空関数として残す）
+async function getAllPattFiles() { return {}; }
+async function renderPattFileList() {}
+function refreshPattStampSelect() {}
+
+
+
+/* ============================================================
+   ADMIN PANEL
+   ============================================================ */
+const ADMIN_DEFAULT_PASSWORD = 'bunka2024';
+const PRESET_COLORS = ['#ff6b35','#a855f7','#06ffa5','#ffd23f','#ef4444','#3b82f6','#ec4899','#10b981'];
+const DEFAULT_STAMPS = JSON.parse(JSON.stringify(STAMPS)); // deep copy of initial state
+
+function openAdminAuth() {
+  document.getElementById('admin-auth-modal').classList.add('show');
+  document.getElementById('admin-password-input').value = '';
+  setTimeout(() => document.getElementById('admin-password-input').focus(), 300);
+}
+function closeAdminAuth() {
+  document.getElementById('admin-auth-modal').classList.remove('show');
+}
+async function adminLogin() {
+  const pw = document.getElementById('admin-password-input').value;
+  const input = document.getElementById('admin-password-input');
+  if (!pw) return;
+
+  // Firebase接続時: DBのハッシュと比較
+  let valid = false;
+  if (DB.isConnected()) {
+    const storedHash = await DB.get('settings/adminHash');
+    if (storedHash) {
+      const inputHash = await sha256(pw);
+      valid = (inputHash === storedHash);
+    } else {
+      // DBにハッシュ未設定 → デフォルトパスワードと照合
+      valid = (pw === ADMIN_DEFAULT_PASSWORD);
+      if (valid) {
+        // 初回ログイン: デフォルトパスワードのハッシュをDBに保存
+        const hash = await sha256(pw);
+        await DB.set('settings/adminHash', hash);
+      }
+    }
+  } else {
+    // オフライン/未設定時: localStorageのハッシュと照合
+    const storedHash = localStorage.getItem('ar_admin_pw_hash');
+    if (storedHash) {
+      valid = (await sha256(pw) === storedHash);
+    } else {
+      valid = (pw === ADMIN_DEFAULT_PASSWORD);
+    }
+  }
+
+  if (valid) {
+    closeAdminAuth();
+    openAdminPanel();
+  } else {
+    input.classList.add('error');
+    input.value = '';
+    setTimeout(() => input.classList.remove('error'), 500);
+  }
+}
+
+// --- Open admin panel ---
+function openAdminPanel() {
+  renderAdminStampList();
+  loadGlobalSettings();
+  updateAdminStats();
+  refreshMindFileStatus();
+  // Firebase接続状態バナー
+  const ok = document.getElementById('firebase-ok-banner');
+  const ng = document.getElementById('firebase-status-banner');
+  if (DB.isConnected()) {
+    if (ok) ok.style.display = 'block';
+    if (ng) ng.style.display = 'none';
+    // 管理者だけリアルタイムリスナーを張る（接続数を管理者分だけに抑える）
+    DB.listen('settings/texts', (data) => {
+      if (!data) return;
+      _settingsCache = data;
+      loadGlobalSettings(); // 管理者の入力欄も最新に
+    });
+    DB.listen('settings/stamps', (data) => {
+      if (!Array.isArray(data) || data.length === 0) return;
+      STAMPS.length = 0;
+      data.forEach(s => STAMPS.push(s));
+      renderAdminStampList();
+      updateAdminStats();
+    });
+  } else {
+    if (ok) ok.style.display = 'none';
+    if (ng) ng.style.display = 'block';
+  }
+  showScreen('admin');
+}
+
+// 管理者パネルを閉じるときにリスナー解除（接続を解放）
+function closeAdminPanel() {
+  if (DB.isConnected()) {
+    DB.unlisten('settings/texts');
+    DB.unlisten('settings/stamps');
+  }
+  showScreen('title');
+}
+
+function updateAdminStats() {
+  document.getElementById('admin-stat-total').textContent = STAMPS.length;
+  const maxIdx = STAMPS.length > 0 ? Math.max(...STAMPS.map(s => s.markerIndex)) : 0;
+  document.getElementById('admin-stat-markermax').textContent = maxIdx;
+  document.getElementById('admin-stat-complete').textContent = STAMPS.length;
+}
+
+// --- Render stamp list ---
+function renderAdminStampList() {
+  const list = document.getElementById('admin-stamp-list');
+  list.innerHTML = '';
+  STAMPS.forEach((stamp, idx) => {
+    const displayNum = stamp.number !== undefined ? stamp.number : (idx + 1);
+    const card = document.createElement('div');
+    card.className = 'admin-stamp-card';
+    card.dataset.id = stamp.id;
+    card.innerHTML = `
+      <div class="admin-stamp-card-header" onclick="toggleAdminCard(${stamp.id})">
+        <span class="btn-drag-handle">⠿</span>
+        <div class="admin-stamp-card-emoji">${stamp.emoji}</div>
+        <div class="admin-stamp-card-info">
+          <div class="admin-stamp-card-name">${stamp.name}</div>
+          <div class="admin-stamp-card-meta">${stamp.location}</div>
+        </div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-right:6px;">No.${displayNum}</div>
+        <div class="admin-stamp-card-actions">
+          <button class="admin-action-btn delete" onclick="event.stopPropagation();adminDeleteStamp(${stamp.id})">🗑</button>
+        </div>
+      </div>
+      <div class="admin-stamp-card-body" id="admin-card-body-${stamp.id}">
+        <div class="admin-field-row">
+          <div class="admin-field" style="flex:0 0 auto;">
+            <div class="admin-label">絵文字</div>
+            <input class="admin-input emoji-input" id="af-emoji-${stamp.id}" value="${stamp.emoji}" maxlength="2" />
+          </div>
+          <div class="admin-field" style="flex:0 0 80px;">
+            <div class="admin-label">表示番号</div>
+            <input class="admin-input" id="af-number-${stamp.id}" type="text" value="${displayNum}" placeholder="1" style="text-align:center;" />
+          </div>
+          <div class="admin-field">
+            <div class="admin-label">スタンプ名</div>
+            <input class="admin-input" id="af-name-${stamp.id}" value="${stamp.name}" placeholder="例：エントランス" />
+          </div>
+        </div>
+        <div class="admin-field">
+          <div class="admin-label">場所</div>
+          <input class="admin-input" id="af-location-${stamp.id}" value="${stamp.location}" placeholder="例：📍 正面玄関" />
+        </div>
+        <div class="admin-field">
+          <div class="admin-label">取得メッセージ</div>
+          <input class="admin-input" id="af-message-${stamp.id}" value="${stamp.message}" placeholder="スタンプ取得時に表示するメッセージ" />
+        </div>
+        <div class="admin-field">
+          <div class="admin-label">テーマカラー</div>
+          <div class="admin-color-row" id="color-row-${stamp.id}">
+            ${PRESET_COLORS.map(c => `
+              <div class="admin-color-swatch ${c===stamp.color?'selected':''}"
+                style="background:${c};"
+                onclick="selectColor(${stamp.id},'${c}')"
+                data-color="${c}"></div>
+            `).join('')}
+            <input type="color" class="admin-color-custom" id="af-color-${stamp.id}"
+              value="${stamp.color}" oninput="selectColor(${stamp.id}, this.value)" />
+          </div>
+        </div>
+        <button class="btn-save-stamp" onclick="adminSaveStamp(${stamp.id})">💾 保存</button>
+      </div>
+    `;
+    list.appendChild(card);
+  });
+}
+
+function toggleAdminCard(id) {
+  const body = document.getElementById(`admin-card-body-${id}`);
+  const isOpen = body.classList.contains('open');
+  // Close all
+  document.querySelectorAll('.admin-stamp-card-body').forEach(b => b.classList.remove('open'));
+  if (!isOpen) body.classList.add('open');
+}
+
+function selectColor(stampId, color) {
+  const row = document.getElementById(`color-row-${stampId}`);
+  row.querySelectorAll('.admin-color-swatch').forEach(sw => {
+    sw.classList.toggle('selected', sw.dataset.color === color);
+  });
+  document.getElementById(`af-color-${stampId}`).value = color;
+}
+
+function adminSaveStamp(id) {
+  const idx = STAMPS.findIndex(s => s.id === id);
+  if (idx === -1) return;
+  STAMPS[idx].emoji    = document.getElementById(`af-emoji-${id}`).value || '⭐';
+  STAMPS[idx].name     = document.getElementById(`af-name-${id}`).value || 'スタンプ';
+  STAMPS[idx].location = document.getElementById(`af-location-${id}`).value || '📍 場所';
+  STAMPS[idx].message  = document.getElementById(`af-message-${id}`).value || '';
+  STAMPS[idx].color    = document.getElementById(`af-color-${id}`).value || '#ff6b35';
+  STAMPS[idx].markerIndex = idx;
+  // 表示番号: 入力値をそのまま文字列として保存（数字以外も可）
+  const numEl = document.getElementById(`af-number-${id}`);
+  STAMPS[idx].number = numEl ? (numEl.value.trim() || String(idx + 1)) : String(idx + 1);
+  saveStampsToStorage();
+  renderAdminStampList();
+  updateAdminStats();
+  showAdminToast('✅ 保存しました');
+}
+
+function adminDeleteStamp(id) {
+  const stamp = STAMPS.find(s => s.id === id);
+  showConfirmModal(
+    '🗑',
+    `「${stamp?.name}」を削除`,
+    'このスタンプを削除します。元に戻せません。',
+    () => {
+      const idx = STAMPS.findIndex(s => s.id === id);
+      if (idx !== -1) STAMPS.splice(idx, 1);
+      saveStampsToStorage();
+      renderAdminStampList();
+      updateAdminStats();
+      showSuccessModal('🗑 削除しました');
+    }
+  );
+}
+
+function adminAddStamp() {
+  const newId = Date.now();
+  const newMarkerIdx = STAMPS.length > 0 ? Math.max(...STAMPS.map(s => s.markerIndex)) + 1 : 0;
+  const autoNumber = String(STAMPS.length + 1); // 自動連番（後から変更可能）
+  const colors = ['#ff6b35','#a855f7','#06ffa5','#ffd23f','#ef4444','#3b82f6','#ec4899','#10b981'];
+  STAMPS.push({
+    id: newId,
+    number: autoNumber,
+    emoji: '⭐',
+    name: '新しいスタンプ',
+    location: '📍 場所を入力',
+    message: 'スタンプをゲットしました！',
+    color: colors[STAMPS.length % colors.length],
+    markerIndex: newMarkerIdx,
+  });
+  saveStampsToStorage();
+  renderAdminStampList();
+  updateAdminStats();
+  setTimeout(() => {
+    const body = document.getElementById(`admin-card-body-${newId}`);
+    if (body) { body.classList.add('open'); body.scrollIntoView({ behavior:'smooth', block:'center' }); }
+  }, 100);
+  showAdminToast('➕ スタンプを追加しました');
+}
+
+// --- Global settings ---
+const TEXT_DEFAULTS = {
+  // タイトル画面
+  titleBadge:       '📍 WebAR STAMP RALLY',
+  titleLogo:        'AR\nスタンプラリー',
+  titleSub:         '文化祭 2024 ／ 校内探検マップ',
+  btnStart:         'スタート！',
+  howtoLink:        '遊び方を見る',
+  // 遊び方モーダル
+  howtoModalTitle:  '📖 遊び方',
+  howto1title:      'マップを確認する',
+  howto1body:       'スタンプポイントの場所と、そこにあるARマーカーを確認しよう！',
+  howto2title:      'マーカーを見つける',
+  howto2body:       '各スポットにあるARマーカー（特製ポスター）を探してね。',
+  howto3title:      'カメラでスキャン',
+  howto3body:       '「スキャン」ボタンを押してカメラを起動。マーカーにかざすとスタンプをゲット！',
+  howto4title:      '全部集めて特典をゲット！',
+  howto4body:       '5つ全部集めると、文化祭限定のスペシャル特典がもらえるよ 🎉',
+  howtoCloseBtn:    '閉じる',
+  // マップ画面
+  mapTitle:         '📍 スタンプマップ',
+  btnScan:          '📷 スキャンする',
+  stampCollectedLabel: '✓ 取得済み',
+  stampHint:        'マーカーを探してスキャンしよう！',
+  navMap:           'マップ',
+  navHowto:         '遊び方',
+  // ARカメラ画面
+  arStatus:         'ARマーカーにカメラを向けてください',
+  arDetectedLabel:  'MARKER FOUND!',
+  arCloseBtn:       '✕ 閉じる',
+  // スタンプ獲得画面
+  stampGetTitle:    '✨ スタンプ獲得！',
+  btnBackMap:       'マップに戻る',
+  // 完走画面
+  completeStar:     '🌟',
+  completeTitle:    'コンプリート！',
+  completeSub:      '全5つのスタンプを集めました！',
+  couponLabel:      '🎁 特典クーポン',
+  couponTitle:      '模擬店 1品無料！',
+  couponNote:       '中央広場の文化祭本部に見せてね（本日限り）',
+};
+
+// グローバル設定キャッシュ（localStorage廃止・Firebase優先）
+let _settingsCache = {};
+
+async function loadSettingsCache() {
+  if (DB.isConnected()) {
+    const data = await DB.get('settings/texts');
+    _settingsCache = data || {};
+  } else {
+    try { _settingsCache = JSON.parse(localStorage.getItem('ar_global_settings') || '{}'); } catch(e) {}
+  }
+}
+
+function getSetting(key) {
+  return _settingsCache[key] !== undefined ? _settingsCache[key] : TEXT_DEFAULTS[key];
+}
+
+function loadGlobalSettings() {
+  const g = getSetting.bind(null);
+  const setVal = (id, key) => { const el = document.getElementById(id); if (el) el.value = g(key); };
+
+  setVal('setting-title-badge',        'titleBadge');
+  setVal('setting-title-logo',         'titleLogo');
+  setVal('setting-title-sub',          'titleSub');
+  setVal('setting-btn-start',          'btnStart');
+  setVal('setting-howto-link',         'howtoLink');
+  setVal('setting-howto-modal-title',  'howtoModalTitle');
+  setVal('setting-howto-1-title',      'howto1title');
+  setVal('setting-howto-1-body',       'howto1body');
+  setVal('setting-howto-2-title',      'howto2title');
+  setVal('setting-howto-2-body',       'howto2body');
+  setVal('setting-howto-3-title',      'howto3title');
+  setVal('setting-howto-3-body',       'howto3body');
+  setVal('setting-howto-4-title',      'howto4title');
+  setVal('setting-howto-4-body',       'howto4body');
+  setVal('setting-howto-close-btn',    'howtoCloseBtn');
+  setVal('setting-map-title',          'mapTitle');
+  setVal('setting-btn-scan',           'btnScan');
+  setVal('setting-stamp-collected-label','stampCollectedLabel');
+  setVal('setting-stamp-hint',         'stampHint');
+  setVal('setting-nav-map',            'navMap');
+  setVal('setting-nav-howto',          'navHowto');
+  setVal('setting-ar-status',          'arStatus');
+  setVal('setting-ar-detected-label',  'arDetectedLabel');
+  setVal('setting-ar-close-btn',       'arCloseBtn');
+  setVal('setting-stamp-get-title',    'stampGetTitle');
+  setVal('setting-btn-back-map',       'btnBackMap');
+  setVal('setting-complete-star',      'completeStar');
+  setVal('setting-complete-title',     'completeTitle');
+  setVal('setting-complete-sub',       'completeSub');
+  setVal('setting-coupon-label',       'couponLabel');
+  setVal('setting-coupon-title',       'couponTitle');
+  setVal('setting-coupon-note',        'couponNote');
+}
+
+async function saveTextSettings() {
+  const allKeys = [
+    ['setting-title-badge',    'titleBadge'],
+    ['setting-title-logo',     'titleLogo'],
+    ['setting-title-sub',      'titleSub'],
+    ['setting-btn-start',      'btnStart'],
+    ['setting-howto-link',     'howtoLink'],
+    ['setting-howto-modal-title','howtoModalTitle'],
+    ['setting-howto-1-title',  'howto1title'],
+    ['setting-howto-1-body',   'howto1body'],
+    ['setting-howto-2-title',  'howto2title'],
+    ['setting-howto-2-body',   'howto2body'],
+    ['setting-howto-3-title',  'howto3title'],
+    ['setting-howto-3-body',   'howto3body'],
+    ['setting-howto-4-title',  'howto4title'],
+    ['setting-howto-4-body',   'howto4body'],
+    ['setting-howto-close-btn','howtoCloseBtn'],
+    ['setting-map-title',      'mapTitle'],
+    ['setting-btn-scan',       'btnScan'],
+    ['setting-stamp-collected-label','stampCollectedLabel'],
+    ['setting-stamp-hint',     'stampHint'],
+    ['setting-nav-map',        'navMap'],
+    ['setting-nav-howto',      'navHowto'],
+    ['setting-ar-status',      'arStatus'],
+    ['setting-ar-detected-label','arDetectedLabel'],
+    ['setting-ar-close-btn',   'arCloseBtn'],
+    ['setting-stamp-get-title','stampGetTitle'],
+    ['setting-btn-back-map',   'btnBackMap'],
+    ['setting-complete-star',  'completeStar'],
+    ['setting-complete-title', 'completeTitle'],
+    ['setting-complete-sub',   'completeSub'],
+    ['setting-coupon-label',   'couponLabel'],
+    ['setting-coupon-title',   'couponTitle'],
+    ['setting-coupon-note',    'couponNote'],
+  ];
+  const s = {};
+  allKeys.forEach(([id, key]) => {
+    const el = document.getElementById(id);
+    if (el) s[key] = el.value.trim() || TEXT_DEFAULTS[key];
+  });
+
+  if (DB.isConnected()) {
+    const ok = await DB.set('settings/texts', s);
+    if (ok) {
+      _settingsCache = s;
+      showAdminToast('✅ 全端末に反映しました');
+    } else {
+      showAdminToast('❌ 保存に失敗しました');
+    }
+  } else {
+    _settingsCache = s;
+    localStorage.setItem('ar_global_settings', JSON.stringify(s));
+    showAdminToast('✅ テキストを保存しました（オフライン）');
+  }
+  applyGlobalSettings();
+}
+
+function saveGlobalSettings() {
+  saveTextSettings();
+}
+
+function applyGlobalSettings() {
+  const g = getSetting;
+  const setText = (sel, key) => { const el = document.querySelector(sel); if (el) el.textContent = g(key); };
+
+  // --- タイトル画面 ---
+  const badge = document.querySelector('.title-badge');
+  if (badge) badge.textContent = g('titleBadge');
+
+  const logo = document.querySelector('.title-logo');
+  if (logo) {
+    const parts = g('titleLogo').split('\\n');
+    logo.innerHTML = parts.join('<br>');
+  }
+
+  setText('.title-sub', 'titleSub');
+  const btnStart = document.querySelector('.btn-start');
+  if (btnStart) btnStart.textContent = g('btnStart');
+  const howtoLink = document.querySelector('.how-to-link');
+  if (howtoLink) howtoLink.textContent = g('howtoLink');
+
+  // --- 遊び方モーダル ---
+  const howtoTitle = document.querySelector('#howto-modal [data-id="howto-modal-title"]');
+  if (howtoTitle) howtoTitle.textContent = g('howtoModalTitle');
+  document.querySelectorAll('#howto-modal [data-step]').forEach(el => {
+    el.textContent = g(`howto${el.dataset.step}${el.dataset.type}`);
+  });
+  document.querySelectorAll('#howto-modal [data-id="howto-close-btn"]').forEach(el => {
+    el.textContent = g('howtoCloseBtn');
+  });
+
+  // --- マップ画面 ---
+  const mapTitle = document.querySelector('.map-title');
+  if (mapTitle) mapTitle.textContent = g('mapTitle');
+  const btnScan = document.querySelector('.btn-scan');
+  if (btnScan) btnScan.textContent = g('btnScan');
+  const navMapBtn = document.getElementById('nav-map-label');
+  if (navMapBtn) navMapBtn.textContent = g('navMap');
+  const navHowtoBtn = document.getElementById('nav-howto-label');
+  if (navHowtoBtn) navHowtoBtn.textContent = g('navHowto');
+
+  // --- ARカメラ画面 ---
+  const arStatusEl = document.getElementById('ar-status-text');
+  if (arStatusEl) arStatusEl.innerHTML = `<span class="blink">●</span> ${g('arStatus')}`;
+  const arDetectedLabel = document.querySelector('.ar-detected-label');
+  if (arDetectedLabel) arDetectedLabel.textContent = g('arDetectedLabel');
+  const arCloseBtn = document.querySelector('.btn-close-ar');
+  if (arCloseBtn) arCloseBtn.textContent = g('arCloseBtn');
+
+  // --- スタンプ獲得画面 ---
+  setText('.stamp-collect-title', 'stampGetTitle');
+  setText('.btn-back-map', 'btnBackMap');
+
+  // --- 完走画面 ---
+  setText('.complete-star', 'completeStar');
+  setText('.complete-title', 'completeTitle');
+  setText('.complete-subtitle', 'completeSub');
+  setText('.complete-coupon-label', 'couponLabel');
+  setText('.complete-coupon-text', 'couponTitle');
+  setText('.complete-coupon-note', 'couponNote');
+
+  renderMap();
+}
+
+// --- Password change ---
+async function changeAdminPassword() {
+  const np = document.getElementById('setting-new-password').value.trim();
+  if (!np) { showAdminToast('⚠️ パスワードを入力してください'); return; }
+  if (np.length < 4) { showAdminToast('⚠️ 4文字以上で設定してください'); return; }
+  const hash = await sha256(np);
+  if (DB.isConnected()) {
+    const ok = await DB.set('settings/adminHash', hash);
+    if (ok) {
+      showAdminToast('🔑 パスワードを全端末に反映しました');
+    } else {
+      showAdminToast('❌ 保存に失敗しました');
+      return;
+    }
+  } else {
+    // オフライン時はlocalStorageに保存
+    localStorage.setItem('ar_admin_pw_hash', hash);
+    showAdminToast('🔑 パスワードを変更しました（オフライン）');
+  }
+  document.getElementById('setting-new-password').value = '';
+}
+
+// --- Export / Import ---
+async function exportData() {
+  const data = { stamps: STAMPS, settings: _settingsCache };
+  const json = JSON.stringify(data, null, 2);
+  document.getElementById('admin-export-area').textContent = json;
+  try {
+    await navigator.clipboard.writeText(json);
+    showAdminToast('📋 クリップボードにコピーしました');
+  } catch(e) {
+    showAdminToast('📋 上のテキストをコピーしてください');
+  }
+}
+
+async function importData() {
+  const raw = prompt('JSONデータを貼り付けてください：');
+  if (!raw) return;
+  try {
+    const data = JSON.parse(raw);
+    if (data.stamps && Array.isArray(data.stamps)) {
+      STAMPS.length = 0;
+      data.stamps.forEach(s => STAMPS.push(s));
+      await saveStampsToStorage();
+      if (data.settings) {
+        _settingsCache = data.settings;
+        if (DB.isConnected()) {
+          await DB.set('settings/texts', data.settings);
+        } else {
+          localStorage.setItem('ar_global_settings', JSON.stringify(data.settings));
+        }
+        applyGlobalSettings();
+      }
+      renderAdminStampList();
+      loadGlobalSettings();
+      updateAdminStats();
+      showAdminToast('📥 全端末に反映しました');
+    }
+  } catch(e) { showAdminToast('❌ JSONが正しくありません'); }
+}
+
+// --- Confirm / Success modals ---
+let confirmCallback = null;
+function showConfirmModal(icon, title, body, onOk, okLabel, okColor) {
+  document.getElementById('confirm-icon').textContent = icon;
+  document.getElementById('confirm-title').textContent = title;
+  document.getElementById('confirm-body').textContent = body;
+  const okBtn = document.getElementById('confirm-ok-btn');
+  okBtn.textContent = okLabel || '実行する';
+  okBtn.style.background = okColor || 'linear-gradient(135deg,#ef4444,#dc2626)';
+  okBtn.onclick = () => { closeConfirmModal(); onOk(); };
+  document.getElementById('confirm-modal').style.display = 'flex';
+}
+function closeConfirmModal() {
+  document.getElementById('confirm-modal').style.display = 'none';
+}
+function showSuccessModal(message) {
+  document.getElementById('success-message').textContent = message;
+  const modal = document.getElementById('success-modal');
+  modal.style.display = 'flex';
+  setTimeout(() => { modal.style.display = 'none'; }, 2000);
+}
+
+// 自分の端末の進捗だけリセット（各自のlocalStorageのみ）
+function adminResetAllProgress() {
+  showConfirmModal(
+    '🔄',
+    'この端末の進捗をリセット',
+    'この端末のスタンプ進捗・タイマーをリセットします。他の参加者には影響しません。',
+    () => {
+      collected = [];
+      rallyStartTime = null;
+      rallyEndTime = null;
+      stopStopwatch();
+      const el = document.getElementById('stopwatch-display');
+      if (el) el.textContent = '⏱ --:--';
+      localStorage.removeItem('ar_rally_collected');
+      localStorage.removeItem('ar_rally_start');
+      document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+      document.getElementById('screen-title').classList.remove('hidden');
+      document.getElementById('bottom-nav').style.display = 'none';
+      showSuccessModal('✅ この端末をリセットしました');
+    }
+  );
+}
+
+// スタンプ・設定を初期状態に戻してFirebaseに反映
+function adminResetToDefault() {
+  showConfirmModal(
+    '↩️',
+    '初期データに戻す',
+    'スタンプデータ・テキスト設定を初期状態に戻します。全端末に反映されます。',
+    async () => {
+      STAMPS.length = 0;
+      DEFAULT_STAMPS.forEach(s => STAMPS.push(JSON.parse(JSON.stringify(s))));
+      await saveStampsToStorage();
+      renderAdminStampList();
+      updateAdminStats();
+      showSuccessModal('↩️ 初期データに戻しました');
+    }
+  );
+}
+
+// 翌年用リセット: Firebaseの設定は保持し開催年を更新 + 各自の進捗はlocalStorage削除案内
+function adminNextYearReset() {
+  showConfirmModal(
+    '🗓️',
+    '翌年用リセット',
+    'スタンプ・テキスト設定はそのままで、開催年を更新します。参加者は次回アクセス時に進捗が自動リセットされます。',
+    async () => {
+      const nextYear = new Date().getFullYear();
+      if (DB.isConnected()) {
+        await DB.set('settings/eventYear', nextYear);
+      } else {
+        localStorage.setItem('ar_event_year', String(nextYear));
+      }
+      showSuccessModal(`✅ ${nextYear}年度版に更新しました`);
+    }
+  );
+}
+
+// --- Storage (Firebase同期 + localStorageフォールバック) ---
+async function saveStampsToStorage() {
+  const data = JSON.parse(JSON.stringify(STAMPS));
+  if (DB.isConnected()) {
+    await DB.set('settings/stamps', data);
+  } else {
+    localStorage.setItem('ar_rally_stamps', JSON.stringify(data));
+  }
+}
+
+async function loadStampsFromStorage() {
+  let data = null;
+  if (DB.isConnected()) {
+    data = await DB.get('settings/stamps');
+  }
+  if (!data) {
+    const saved = localStorage.getItem('ar_rally_stamps');
+    if (saved) { try { data = JSON.parse(saved); } catch(e) {} }
+  }
+  if (Array.isArray(data) && data.length > 0) {
+    STAMPS.length = 0;
+    data.forEach(s => STAMPS.push(s));
+  }
+}
+
+// 開催年チェック: 年が変わっていたら各自の進捗を自動リセット
+async function checkEventYear() {
+  let serverYear = null;
+  if (DB.isConnected()) {
+    serverYear = await DB.get('settings/eventYear');
+  } else {
+    serverYear = parseInt(localStorage.getItem('ar_event_year') || '0');
+  }
+  if (!serverYear) return;
+  const clientYear = parseInt(localStorage.getItem('ar_client_year') || '0');
+  if (clientYear && clientYear !== serverYear) {
+    // 年度が変わった → この端末の進捗をリセット
+    collected = [];
+    localStorage.removeItem('ar_rally_collected');
+    localStorage.removeItem('ar_rally_start');
+    console.log('[年度更新] 進捗をリセットしました');
+  }
+  localStorage.setItem('ar_client_year', String(serverYear));
+}
+
+// --- Toast ---
+let toastTimer = null;
+function showAdminToast(msg) {
+  let toast = document.getElementById('admin-toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'admin-toast';
+    toast.style.cssText = `
+      position:fixed; bottom:100px; left:50%; transform:translateX(-50%);
+      background:rgba(99,102,241,0.95); color:#fff; border-radius:30px;
+      padding:10px 24px; font-size:14px; font-weight:700; z-index:9999;
+      font-family:'Zen Maru Gothic',sans-serif; white-space:nowrap;
+      transition:opacity 0.3s; backdrop-filter:blur(10px);
+      box-shadow:0 4px 20px rgba(0,0,0,0.3);
+    `;
+    document.body.appendChild(toast);
+  }
+  toast.textContent = msg;
+  toast.style.opacity = '1';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { toast.style.opacity = '0'; }, 2000);
+}
+
+// ============================================================
+//  起動処理 (Firebase対応・非同期)
+// ============================================================
+async function initApp() {
+  // ローディング表示
+  const loading = document.createElement('div');
+  loading.id = 'app-loading';
+  loading.style.cssText = `
+    position:fixed;inset:0;z-index:2500;
+    background:#0d0d1a;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:16px;
+    pointer-events:all;
+  `;
+  loading.innerHTML = `
+    <div style="font-size:40px;animation:pulse 1s infinite;">📍</div>
+    <div style="color:rgba(255,255,255,0.6);font-size:14px;font-family:'Zen Maru Gothic',sans-serif;">読み込み中...</div>
+  `;
+  // ローディング中はスタートボタンを無効化
+  const btnStart = document.querySelector('.btn-start');
+  if (btnStart) { btnStart.disabled = true; btnStart.style.opacity = '0.5'; }
+  document.body.appendChild(loading);
+
+  try {
+    // 全体に8秒のタイムアウトをかける（Firebaseが応答しなくてもアプリが起動する）
+    await Promise.race([
+      (async () => {
+        // 1. 開催年チェック（年度が変わっていたら進捗リセット）
+        await checkEventYear();
+
+        // 2. Firebaseから設定・スタンプを取得
+        await Promise.all([
+          loadSettingsCache(),
+          loadStampsFromStorage(),
+        ]);
+      })(),
+      new Promise(resolve => setTimeout(resolve, 8000)) // 8秒でタイムアウト→続行
+    ]);
+
+    // 3. 画面に反映
+    applyGlobalSettings();
+    renderMap();
+
+    // 4. 接続戦略:
+    //    参加者 → 起動時に1回だけ取得して接続を切る（同時接続数を消費しない）
+    //    管理者 → openAdminPanel()内でリスナーを張る（管理者1人だけ）
+    //    これにより何千人アクセスしても接続数は「管理者数人分」だけ
+
+    // 5. タイマー復元
+    const savedStart = localStorage.getItem('ar_rally_start');
+    if (savedStart && collected.length > 0) {
+      rallyStartTime = parseInt(savedStart);
+      if (collected.length >= STAMPS.length) {
+        const el = document.getElementById('stopwatch-display');
+        if (el) el.textContent = '⏱ ' + formatElapsed(Date.now() - rallyStartTime);
+      } else {
+        startStopwatch();
+      }
+    }
+
+  } catch(e) {
+    console.error('[initApp] エラー:', e);
+    applyGlobalSettings();
+    renderMap();
+  } finally {
+    // ローディング終了・スタートボタン有効化
+    if (btnStart) { btnStart.disabled = false; btnStart.style.opacity = ''; }
+    loading.style.opacity = '0';
+    loading.style.transition = 'opacity 0.3s';
+    setTimeout(() => loading.remove(), 300);
+  }
+}
+
+// iOS Safari BFCache対応
+window.addEventListener('pageshow', (e) => {
+  if (e.persisted) stopARCamera();
+});
+
+// iOS Safari: スリープ復帰後のタイマー再開
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden && rallyStartTime && collected.length < STAMPS.length) {
+    if (!stopwatchInterval) startStopwatch();
+  }
+});
+
+// アプリ起動
+initApp();
+</script>
+</body>
+</html>
