@@ -795,24 +795,7 @@
 
     <div data-id="howto-modal-title" style="font-size:22px; font-weight:900; margin-bottom:20px; color:var(--secondary);">📖 遊び方</div>
 
-    <div style="display:flex;flex-direction:column;gap:14px;">
-      <div style="display:flex;gap:14px;align-items:flex-start;padding:14px;background:rgba(255,255,255,0.05);border-radius:14px;border-left:3px solid var(--accent);">
-        <div style="width:34px;height:34px;border-radius:50%;background:var(--accent);color:var(--dark);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;flex-shrink:0;">1</div>
-        <div style="font-size:14px;line-height:1.6;"><strong data-step="1" data-type="title" style="display:block;font-size:15px;margin-bottom:3px;color:#fff;">マップを確認する</strong><span data-step="1" data-type="body">スタンプポイントの場所と、そこにあるARマーカーを確認しよう！</span></div>
-      </div>
-      <div style="display:flex;gap:14px;align-items:flex-start;padding:14px;background:rgba(255,255,255,0.05);border-radius:14px;border-left:3px solid var(--accent);">
-        <div style="width:34px;height:34px;border-radius:50%;background:var(--accent);color:var(--dark);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;flex-shrink:0;">2</div>
-        <div style="font-size:14px;line-height:1.6;"><strong data-step="2" data-type="title" style="display:block;font-size:15px;margin-bottom:3px;color:#fff;">マーカーを見つける</strong><span data-step="2" data-type="body">各スポットにあるARマーカー（特製ポスター）を探してね。</span></div>
-      </div>
-      <div style="display:flex;gap:14px;align-items:flex-start;padding:14px;background:rgba(255,255,255,0.05);border-radius:14px;border-left:3px solid var(--accent);">
-        <div style="width:34px;height:34px;border-radius:50%;background:var(--accent);color:var(--dark);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;flex-shrink:0;">3</div>
-        <div style="font-size:14px;line-height:1.6;"><strong data-step="3" data-type="title" style="display:block;font-size:15px;margin-bottom:3px;color:#fff;">カメラでスキャン</strong><span data-step="3" data-type="body">「スキャン」ボタンを押してカメラを起動。マーカーにかざすとスタンプをゲット！</span></div>
-      </div>
-      <div style="display:flex;gap:14px;align-items:flex-start;padding:14px;background:rgba(255,255,255,0.05);border-radius:14px;border-left:3px solid var(--accent);">
-        <div style="width:34px;height:34px;border-radius:50%;background:var(--accent);color:var(--dark);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;flex-shrink:0;">4</div>
-        <div style="font-size:14px;line-height:1.6;"><strong data-step="4" data-type="title" style="display:block;font-size:15px;margin-bottom:3px;color:#fff;">全部集めて特典をゲット！</strong><span data-step="4" data-type="body">5つ全部集めると、文化祭限定のスペシャル特典がもらえるよ 🎉</span></div>
-      </div>
-    </div>
+    <div id="howto-steps-list" style="display:flex;flex-direction:column;gap:14px;"></div>
 
     <button data-id="howto-close-btn" onclick="closeHowtoModal()" style="
       width:100%; margin-top:24px;
@@ -985,6 +968,9 @@
     <div class="admin-section-title">全体設定</div>
     <div class="admin-settings-grid">
 
+      <details open class="admin-setting-row" style="padding:0;border:none;background:transparent;">
+        <summary style="list-style:none;cursor:pointer;padding:14px 16px;border:1px solid rgba(99,102,241,0.28);border-radius:12px;background:rgba(99,102,241,0.1);font-weight:900;">設定 → 表示文字の編集</summary>
+        <div style="display:flex;flex-direction:column;gap:12px;padding-top:12px;">
       <!-- TEXT EDITING: TITLE SCREEN -->
       <div class="admin-setting-row">
         <div class="admin-setting-label">✏️ タイトル画面</div>
@@ -1022,6 +1008,11 @@
           <div class="admin-field">
             <div class="admin-label">モーダルタイトル</div>
             <input class="admin-input" id="setting-howto-modal-title" placeholder="📖 遊び方" />
+          </div>
+          <div class="admin-field">
+            <div class="admin-label">手順リスト（1行 = タイトル|説明）</div>
+            <textarea class="admin-input" id="setting-howto-items" rows="6" placeholder="マップを確認する|スタンプ地点をチェック
+マーカーを見つける|会場内のマーカーを探す"></textarea>
           </div>
           <div class="admin-field">
             <div class="admin-label">ステップ1 タイトル / 説明</div>
@@ -1155,6 +1146,9 @@
         <button class="btn-admin-action" style="margin-top:10px;" onclick="saveGlobalSettings()">保存</button>
       </div>
 
+        </div>
+      </details>
+
       <div class="admin-setting-row">
         <div class="admin-setting-label">🔑 パスワード変更</div>
         <div class="admin-setting-sub">現在のパスワード：設定済み</div>
@@ -1191,6 +1185,14 @@
           <input type="file" accept=".mind" style="display:none;" onchange="uploadMindFile(this)" />
         </label>
         <button class="btn-danger" style="margin-top:10px;width:100%;" onclick="deleteMindFile()">🗑 マーカーファイルを削除（デモモードに戻す）</button>
+        <div style="margin-top:12px;padding:10px;border:1px solid rgba(255,255,255,0.1);border-radius:10px;">
+          <div class="admin-label">クイック紐付け（Target→スタンプ）</div>
+          <div style="display:flex; gap:8px; margin-top:8px;">
+            <input class="admin-input" id="mind-link-target" type="number" min="0" placeholder="Target index" style="max-width:120px;" />
+            <select class="admin-input" id="mind-link-stamp" style="flex:1;"></select>
+            <button class="btn-admin-action" onclick="assignMindTargetToStamp()">反映</button>
+          </div>
+        </div>
       </div>
 
       <div class="admin-danger-zone">
@@ -1297,100 +1299,147 @@
        CDN不要のオフライン完全動作になる（管理者画面から案内）
 -->
 
-<!-- Firebase SDK (バージョン固定 10.12.2) -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-
 <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
 <script>
 /* ============================================================
-   ★ FIREBASE 設定 ★
-   Firebase ConsoleのfirebaseConfigをここに貼り付けてください。
+   ★ Google Sheets + GAS 設定 ★
+   WebアプリURLを設定すると、起動時1回だけ設定を取得してキャッシュします。
    ============================================================ */
-const FIREBASE_CONFIG = {
-  apiKey:            "AIzaSyBkIXZ8bQ_iS6yaPRl0tZ5u-vZIKH4B_Sk",
-  authDomain:        "test-7914b.firebaseapp.com",
-  databaseURL:       "https://test-7914b-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId:         "test-7914b",
-  storageBucket:     "test-7914b.firebasestorage.app",
-  messagingSenderId: "572257078495",
-  appId:             "1:572257078495:web:c48249166949443c082d6a"
-};
+const GAS_WEBAPP_URL = ''; // 例: https://script.google.com/macros/s/xxx/exec
 
 /* ============================================================
-   DB抽象化レイヤー
-   Firebase → 他サービスへの移行時はここだけ変更すればOK
+   DB抽象化レイヤー（GASの1回取得 + IndexedDBキャッシュ）
+   - 起動時の外部通信は1回のみ
+   - オフライン時は最後のキャッシュを利用
    ============================================================ */
 const DB = (() => {
-  let _db = null;
-  let _listeners = {};
-  let _isReady = false;
-  const _readyCallbacks = [];
+  const CACHE_KEY = 'bootstrap';
+  const SOURCE_META_KEY = 'source_meta';
+  let _boot = null;
+  let _connected = false;
 
-  function _init() {
+  const deepClone = (v) => JSON.parse(JSON.stringify(v ?? null));
+
+  function defaultBootstrap() {
+    return {
+      versionId: String(new Date().getFullYear()),
+      settings: {
+        texts: {},
+        eventYear: new Date().getFullYear(),
+        adminHash: null,
+      },
+      stamps: null,
+      howtoItems: null,
+      markerLinks: {},
+      updatedAt: Date.now(),
+    };
+  }
+
+  function pathGet(obj, path) {
+    if (!obj) return null;
+    const keys = path.split('/').filter(Boolean);
+    let cur = obj;
+    for (const k of keys) {
+      if (cur == null || !(k in cur)) return null;
+      cur = cur[k];
+    }
+    return cur;
+  }
+
+  function pathSet(obj, path, value) {
+    const keys = path.split('/').filter(Boolean);
+    let cur = obj;
+    for (let i = 0; i < keys.length - 1; i++) {
+      if (cur[keys[i]] == null || typeof cur[keys[i]] !== 'object') cur[keys[i]] = {};
+      cur = cur[keys[i]];
+    }
+    cur[keys[keys.length - 1]] = value;
+  }
+
+  async function fetchBootstrapOnce() {
+    if (!GAS_WEBAPP_URL) return null;
     try {
-      if (!FIREBASE_CONFIG.apiKey || FIREBASE_CONFIG.apiKey === 'YOUR_API_KEY') {
-        console.warn('[DB] Firebase未設定 → ローカルモードで動作');
-        _isReady = true;
-        _readyCallbacks.forEach(fn => fn());
-        return;
-      }
-      firebase.initializeApp(FIREBASE_CONFIG);
-      _db = firebase.database();
-      _isReady = true;
-      _readyCallbacks.forEach(fn => fn());
-      console.log('[DB] Firebase接続成功');
-    } catch(e) {
-      console.error('[DB] Firebase初期化エラー:', e);
-      _isReady = true;
-      _readyCallbacks.forEach(fn => fn());
+      const res = await fetch(`${GAS_WEBAPP_URL}?mode=bootstrap&t=${Date.now()}`, { cache: 'no-store' });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const json = await res.json();
+      _connected = true;
+      return json;
+    } catch (e) {
+      console.warn('[DB] bootstrap fetch failed:', e.message);
+      return null;
     }
   }
 
-  function onReady(fn) {
-    if (_isReady) fn(); else _readyCallbacks.push(fn);
+  async function ensureBootstrap() {
+    if (_boot) return _boot;
+
+    const remote = await fetchBootstrapOnce();
+    if (remote) {
+      _boot = { ...defaultBootstrap(), ...remote, updatedAt: Date.now() };
+      await idbSet('app_cache', CACHE_KEY, _boot);
+      await idbSet('app_cache', SOURCE_META_KEY, { source: 'remote', at: Date.now() });
+      return _boot;
+    }
+
+    const cached = await idbGet('app_cache', CACHE_KEY);
+    if (cached) {
+      _boot = cached;
+      return _boot;
+    }
+
+    _boot = defaultBootstrap();
+    return _boot;
   }
 
-  // Firebaseから値を1回取得
+  async function onReady(fn) { await ensureBootstrap(); fn(); }
+
   async function get(path) {
-    if (!_db) return null;
-    try {
-      const snap = await _db.ref(path).get();
-      return snap.exists() ? snap.val() : null;
-    } catch(e) { console.error('[DB] get error:', path, e); return null; }
+    const b = await ensureBootstrap();
+    if (path === 'settings/stamps') return b.stamps;
+    if (path === 'settings/howtoItems') return b.howtoItems;
+    if (path === 'settings/versionId') return b.versionId;
+    if (path === 'settings/markerLinks') return b.markerLinks || {};
+    return pathGet(b, path);
   }
 
-  // Firebaseに値をセット
   async function set(path, value) {
-    if (!_db) return false;
-    try {
-      await _db.ref(path).set(value);
-      return true;
-    } catch(e) { console.error('[DB] set error:', path, e); return false; }
+    const b = await ensureBootstrap();
+    if (path === 'settings/stamps') {
+      b.stamps = value;
+    } else if (path === 'settings/howtoItems') {
+      b.howtoItems = value;
+    } else if (path === 'settings/versionId') {
+      b.versionId = value;
+    } else if (path === 'settings/markerLinks') {
+      b.markerLinks = value;
+    } else {
+      pathSet(b, path, value);
+    }
+    b.updatedAt = Date.now();
+    await idbSet('app_cache', CACHE_KEY, b);
+
+    if (GAS_WEBAPP_URL) {
+      try {
+        await fetch(GAS_WEBAPP_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ mode: 'set', path, value })
+        });
+        _connected = true;
+      } catch (e) {
+        console.warn('[DB] set fallback to local cache:', e.message);
+      }
+    }
+    return true;
   }
 
-  // リアルタイムリスナー登録（設定変更を全端末に即反映）
-  function listen(path, callback) {
-    if (!_db) return;
-    if (_listeners[path]) _db.ref(path).off('value', _listeners[path]);
-    const handler = snap => callback(snap.exists() ? snap.val() : null);
-    _listeners[path] = handler;
-    _db.ref(path).on('value', handler);
-  }
+  function listen(_path, _cb) { /* one-shot design */ }
+  function unlisten(_path) {}
+  function isConnected() { return _connected; }
 
-  // リスナー解除
-  function unlisten(path) {
-    if (!_db || !_listeners[path]) return;
-    _db.ref(path).off('value', _listeners[path]);
-    delete _listeners[path];
-  }
-
-  function isConnected() { return !!_db; }
-
-  _init();
-  return { onReady, get, set, listen, unlisten, isConnected };
+  return { onReady, get, set, listen, unlisten, isConnected, ensureBootstrap };
 })();
 
 /* ============================================================
@@ -1699,13 +1748,33 @@ function resetAll() {
    ============================================================ */
 const IDB_NAME = 'ar_rally_db';
 
+function idbGet(store, key) {
+  return openDB().then(db => new Promise((resolve) => {
+    const tx = db.transaction(store, 'readonly');
+    const req = tx.objectStore(store).get(key);
+    req.onsuccess = () => resolve(req.result ?? null);
+    req.onerror = () => resolve(null);
+  })).catch(() => null);
+}
+
+function idbSet(store, key, value) {
+  return openDB().then(db => new Promise((resolve, reject) => {
+    const tx = db.transaction(store, 'readwrite');
+    tx.objectStore(store).put(value, key);
+    tx.oncomplete = () => resolve(true);
+    tx.onerror = () => reject(tx.error);
+  }));
+}
+
+
 function openDB() {
   return new Promise((resolve, reject) => {
-    const req = indexedDB.open(IDB_NAME, 3);
+    const req = indexedDB.open(IDB_NAME, 4);
     req.onupgradeneeded = e => {
       const db = e.target.result;
       if (!db.objectStoreNames.contains('mind_files')) db.createObjectStore('mind_files');
       if (!db.objectStoreNames.contains('patt_files')) db.createObjectStore('patt_files');
+      if (!db.objectStoreNames.contains('app_cache')) db.createObjectStore('app_cache');
     };
     req.onsuccess = e => resolve(e.target.result);
     req.onerror = () => reject(req.error);
@@ -1857,6 +1926,7 @@ async function uploadMindFile(input) {
     await saveMindFileToDB(file);
     showSuccessModal(`✅ ${file.name} を保存しました`);
     refreshMindFileStatus();
+  refreshMindStampSelect();
   } catch(e) {
     showSuccessModal('❌ 保存に失敗しました');
   }
@@ -1868,6 +1938,7 @@ async function deleteMindFile() {
     await deleteMindFileFromDB();
     showSuccessModal('🔄 デモモードに戻しました');
     refreshMindFileStatus();
+  refreshMindStampSelect();
   });
 }
 
@@ -1886,6 +1957,24 @@ async function refreshMindFileStatus() {
     el.style.background = 'rgba(255,255,255,0.04)';
     el.textContent = '📂 未アップロード（デモモードで動作中）';
   }
+}
+
+
+function refreshMindStampSelect() {
+  const sel = document.getElementById('mind-link-stamp');
+  if (!sel) return;
+  sel.innerHTML = STAMPS.map(s => `<option value="${s.id}">${s.emoji} ${s.name}</option>`).join('');
+}
+
+function assignMindTargetToStamp() {
+  const target = Number(document.getElementById('mind-link-target')?.value || '0');
+  const stampId = Number(document.getElementById('mind-link-stamp')?.value || '0');
+  const idx = STAMPS.findIndex(s => s.id === stampId);
+  if (idx < 0) return;
+  STAMPS[idx].markerIndex = target;
+  saveStampsToStorage();
+  renderAdminStampList();
+  showAdminToast(`✅ Target ${target} を ${STAMPS[idx].name} に紐付けました`);
 }
 
 // patt関連の残骸（呼び出し元との互換のため空関数として残す）
@@ -1957,6 +2046,7 @@ function openAdminPanel() {
   loadGlobalSettings();
   updateAdminStats();
   refreshMindFileStatus();
+  refreshMindStampSelect();
   // Firebase接続状態バナー
   const ok = document.getElementById('firebase-ok-banner');
   const ng = document.getElementById('firebase-status-banner');
@@ -2005,12 +2095,18 @@ function renderAdminStampList() {
   list.innerHTML = '';
   STAMPS.forEach((stamp, idx) => {
     const displayNum = stamp.number !== undefined ? stamp.number : (idx + 1);
+    const markerOptions = Array.from({ length: Math.max(STAMPS.length + 2, 8) }, (_, i) => i)
+      .map(i => `<option value="${i}" ${i===Number(stamp.markerIndex||0)?'selected':''}>Target ${i}</option>`).join('');
     const card = document.createElement('div');
     card.className = 'admin-stamp-card';
     card.dataset.id = stamp.id;
+    card.draggable = true;
+    card.ondragstart = (ev) => ev.dataTransfer.setData('text/plain', String(stamp.id));
+    card.ondragover = (ev) => ev.preventDefault();
+    card.ondrop = (ev) => { ev.preventDefault(); reorderStampByDrop(Number(ev.dataTransfer.getData('text/plain')), stamp.id); };
     card.innerHTML = `
       <div class="admin-stamp-card-header" onclick="toggleAdminCard(${stamp.id})">
-        <span class="btn-drag-handle">⠿</span>
+        <span class="btn-drag-handle" title="ドラッグして並び替え">⠿</span>
         <div class="admin-stamp-card-emoji">${stamp.emoji}</div>
         <div class="admin-stamp-card-info">
           <div class="admin-stamp-card-name">${stamp.name}</div>
@@ -2044,6 +2140,12 @@ function renderAdminStampList() {
           <div class="admin-label">取得メッセージ</div>
           <input class="admin-input" id="af-message-${stamp.id}" value="${stamp.message}" placeholder="スタンプ取得時に表示するメッセージ" />
         </div>
+        <div class="admin-field-row">
+          <div class="admin-field">
+            <div class="admin-label">mind Target Index（リンク先）</div>
+            <select class="admin-input" id="af-marker-${stamp.id}">${markerOptions}</select>
+          </div>
+        </div>
         <div class="admin-field">
           <div class="admin-label">テーマカラー</div>
           <div class="admin-color-row" id="color-row-${stamp.id}">
@@ -2062,6 +2164,19 @@ function renderAdminStampList() {
     `;
     list.appendChild(card);
   });
+}
+
+function reorderStampByDrop(dragId, dropId) {
+  if (!dragId || !dropId || dragId === dropId) return;
+  const fromIdx = STAMPS.findIndex(s => s.id === dragId);
+  const toIdx = STAMPS.findIndex(s => s.id === dropId);
+  if (fromIdx < 0 || toIdx < 0) return;
+  const [item] = STAMPS.splice(fromIdx, 1);
+  STAMPS.splice(toIdx, 0, item);
+  STAMPS.forEach((s, i) => { if (!s.number) s.number = String(i + 1); });
+  saveStampsToStorage();
+  renderAdminStampList();
+  showAdminToast('↕️ スタンプの順番を更新しました');
 }
 
 function toggleAdminCard(id) {
@@ -2088,12 +2203,14 @@ function adminSaveStamp(id) {
   STAMPS[idx].location = document.getElementById(`af-location-${id}`).value || '📍 場所';
   STAMPS[idx].message  = document.getElementById(`af-message-${id}`).value || '';
   STAMPS[idx].color    = document.getElementById(`af-color-${id}`).value || '#ff6b35';
-  STAMPS[idx].markerIndex = idx;
+  const markerEl = document.getElementById(`af-marker-${id}`);
+  STAMPS[idx].markerIndex = markerEl ? Number(markerEl.value || 0) : Number(STAMPS[idx].markerIndex || 0);
   // 表示番号: 入力値をそのまま文字列として保存（数字以外も可）
   const numEl = document.getElementById(`af-number-${id}`);
   STAMPS[idx].number = numEl ? (numEl.value.trim() || String(idx + 1)) : String(idx + 1);
   saveStampsToStorage();
   renderAdminStampList();
+  refreshMindStampSelect();
   updateAdminStats();
   showAdminToast('✅ 保存しました');
 }
@@ -2132,6 +2249,7 @@ function adminAddStamp() {
   });
   saveStampsToStorage();
   renderAdminStampList();
+  refreshMindStampSelect();
   updateAdminStats();
   setTimeout(() => {
     const body = document.getElementById(`admin-card-body-${newId}`);
@@ -2186,16 +2304,37 @@ const TEXT_DEFAULTS = {
 let _settingsCache = {};
 
 async function loadSettingsCache() {
-  if (DB.isConnected()) {
-    const data = await DB.get('settings/texts');
+  const data = await DB.get('settings/texts');
+  if (data) {
     _settingsCache = data || {};
-  } else {
-    try { _settingsCache = JSON.parse(localStorage.getItem('ar_global_settings') || '{}'); } catch(e) {}
+    return;
   }
+  try { _settingsCache = JSON.parse(localStorage.getItem('ar_global_settings') || '{}'); } catch(e) {}
 }
 
 function getSetting(key) {
   return _settingsCache[key] !== undefined ? _settingsCache[key] : TEXT_DEFAULTS[key];
+}
+
+function getHowtoItems() {
+  const items = _settingsCache.howtoItems;
+  if (Array.isArray(items) && items.length > 0) return items;
+  return [1,2,3,4].map(i => ({
+    title: getSetting(`howto${i}title`),
+    body: getSetting(`howto${i}body`),
+  }));
+}
+
+function renderHowtoSteps() {
+  const container = document.getElementById('howto-steps-list');
+  if (!container) return;
+  const items = getHowtoItems();
+  container.innerHTML = items.map((item, idx) => `
+    <div style="display:flex;gap:14px;align-items:flex-start;padding:14px;background:rgba(255,255,255,0.05);border-radius:14px;border-left:3px solid var(--accent);">
+      <div style="width:34px;height:34px;border-radius:50%;background:var(--accent);color:var(--dark);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;flex-shrink:0;">${idx+1}</div>
+      <div style="font-size:14px;line-height:1.6;"><strong style="display:block;font-size:15px;margin-bottom:3px;color:#fff;">${item.title}</strong><span>${item.body}</span></div>
+    </div>
+  `).join('');
 }
 
 function loadGlobalSettings() {
@@ -2217,6 +2356,9 @@ function loadGlobalSettings() {
   setVal('setting-howto-4-title',      'howto4title');
   setVal('setting-howto-4-body',       'howto4body');
   setVal('setting-howto-close-btn',    'howtoCloseBtn');
+  const howtoItemsText = getHowtoItems().map(i => `${i.title}|${i.body}`).join('\n');
+  const howtoInput = document.getElementById('setting-howto-items');
+  if (howtoInput) howtoInput.value = howtoItemsText;
   setVal('setting-map-title',          'mapTitle');
   setVal('setting-btn-scan',           'btnScan');
   setVal('setting-stamp-collected-label','stampCollectedLabel');
@@ -2276,20 +2418,17 @@ async function saveTextSettings() {
     const el = document.getElementById(id);
     if (el) s[key] = el.value.trim() || TEXT_DEFAULTS[key];
   });
+  const howtoText = (document.getElementById('setting-howto-items')?.value || '').trim();
+  const parsedItems = howtoText.split('\n').map(line => line.trim()).filter(Boolean).map(line => {
+    const [title, ...rest] = line.split('|');
+    return { title: (title || '').trim(), body: rest.join('|').trim() };
+  }).filter(i => i.title && i.body);
+  s.howtoItems = parsedItems.length ? parsedItems : getHowtoItems();
 
-  if (DB.isConnected()) {
-    const ok = await DB.set('settings/texts', s);
-    if (ok) {
-      _settingsCache = s;
-      showAdminToast('✅ 全端末に反映しました');
-    } else {
-      showAdminToast('❌ 保存に失敗しました');
-    }
-  } else {
-    _settingsCache = s;
-    localStorage.setItem('ar_global_settings', JSON.stringify(s));
-    showAdminToast('✅ テキストを保存しました（オフライン）');
-  }
+  await DB.set('settings/texts', s);
+  _settingsCache = s;
+  localStorage.setItem('ar_global_settings', JSON.stringify(s));
+  showAdminToast(DB.isConnected() ? '✅ 設定をクラウド保存しました' : '✅ 設定を端末保存しました');
   applyGlobalSettings();
 }
 
@@ -2320,12 +2459,10 @@ function applyGlobalSettings() {
   // --- 遊び方モーダル ---
   const howtoTitle = document.querySelector('#howto-modal [data-id="howto-modal-title"]');
   if (howtoTitle) howtoTitle.textContent = g('howtoModalTitle');
-  document.querySelectorAll('#howto-modal [data-step]').forEach(el => {
-    el.textContent = g(`howto${el.dataset.step}${el.dataset.type}`);
-  });
   document.querySelectorAll('#howto-modal [data-id="howto-close-btn"]').forEach(el => {
     el.textContent = g('howtoCloseBtn');
   });
+  renderHowtoSteps();
 
   // --- マップ画面 ---
   const mapTitle = document.querySelector('.map-title');
@@ -2412,6 +2549,7 @@ async function importData() {
           localStorage.setItem('ar_global_settings', JSON.stringify(data.settings));
         }
         applyGlobalSettings();
+    registerSW();
       }
       renderAdminStampList();
       loadGlobalSettings();
@@ -2480,39 +2618,29 @@ function adminResetToDefault() {
   );
 }
 
-// 翌年用リセット: Firebaseの設定は保持し開催年を更新 + 各自の進捗はlocalStorage削除案内
+// Version ID更新: 変更時に全端末の進捗を自動リセット
 function adminNextYearReset() {
   showConfirmModal(
     '🗓️',
-    '翌年用リセット',
-    'スタンプ・テキスト設定はそのままで、開催年を更新します。参加者は次回アクセス時に進捗が自動リセットされます。',
+    'Version ID を更新',
+    'Version IDを更新すると、参加者は次回アクセス時に進捗が自動リセットされます。',
     async () => {
-      const nextYear = new Date().getFullYear();
-      if (DB.isConnected()) {
-        await DB.set('settings/eventYear', nextYear);
-      } else {
-        localStorage.setItem('ar_event_year', String(nextYear));
-      }
-      showSuccessModal(`✅ ${nextYear}年度版に更新しました`);
+      const next = `festival_${new Date().getFullYear()}_${Date.now()}`;
+      await DB.set('settings/versionId', next);
+      showSuccessModal(`✅ Version IDを更新しました（${next}）`);
     }
   );
 }
 
-// --- Storage (Firebase同期 + localStorageフォールバック) ---
+// --- Storage (GAS + IndexedDBキャッシュ) ---
 async function saveStampsToStorage() {
   const data = JSON.parse(JSON.stringify(STAMPS));
-  if (DB.isConnected()) {
-    await DB.set('settings/stamps', data);
-  } else {
-    localStorage.setItem('ar_rally_stamps', JSON.stringify(data));
-  }
+  await DB.set('settings/stamps', data);
+  localStorage.setItem('ar_rally_stamps', JSON.stringify(data));
 }
 
 async function loadStampsFromStorage() {
-  let data = null;
-  if (DB.isConnected()) {
-    data = await DB.get('settings/stamps');
-  }
+  let data = await DB.get('settings/stamps');
   if (!data) {
     const saved = localStorage.getItem('ar_rally_stamps');
     if (saved) { try { data = JSON.parse(saved); } catch(e) {} }
@@ -2523,24 +2651,29 @@ async function loadStampsFromStorage() {
   }
 }
 
-// 開催年チェック: 年が変わっていたら各自の進捗を自動リセット
-async function checkEventYear() {
-  let serverYear = null;
-  if (DB.isConnected()) {
-    serverYear = await DB.get('settings/eventYear');
-  } else {
-    serverYear = parseInt(localStorage.getItem('ar_event_year') || '0');
-  }
-  if (!serverYear) return;
-  const clientYear = parseInt(localStorage.getItem('ar_client_year') || '0');
-  if (clientYear && clientYear !== serverYear) {
-    // 年度が変わった → この端末の進捗をリセット
+// Version IDチェック: 変化していたら各自の進捗を自動リセット
+async function checkVersionId() {
+  const serverVersion = await DB.get('settings/versionId');
+  if (!serverVersion) return;
+  const clientVersion = localStorage.getItem('ar_client_version_id');
+  if (clientVersion && clientVersion !== serverVersion) {
     collected = [];
     localStorage.removeItem('ar_rally_collected');
     localStorage.removeItem('ar_rally_start');
-    console.log('[年度更新] 進捗をリセットしました');
+    console.log('[Version更新] 進捗をリセットしました');
   }
-  localStorage.setItem('ar_client_year', String(serverYear));
+  localStorage.setItem('ar_client_version_id', serverVersion);
+}
+
+
+async function registerSW() {
+  if (!('serviceWorker' in navigator)) return;
+  try {
+    await navigator.serviceWorker.register('./sw.js');
+    console.log('[PWA] service worker registered');
+  } catch (e) {
+    console.warn('[PWA] service worker register failed', e);
+  }
 }
 
 // --- Toast ---
@@ -2585,10 +2718,11 @@ async function initApp() {
   document.body.appendChild(loading);
 
   try {
-    // 1. 開催年チェック（年度が変わっていたら進捗リセット）
-    await checkEventYear();
+    // 1. Version IDチェック（変わっていたら進捗リセット）
+    await checkVersionId();
+    await DB.ensureBootstrap();
 
-    // 2. Firebaseから設定・スタンプを取得
+    // 2. キャッシュ済み設定・スタンプを取得
     await Promise.all([
       loadSettingsCache(),
       loadStampsFromStorage(),
@@ -2596,6 +2730,7 @@ async function initApp() {
 
     // 3. 画面に反映
     applyGlobalSettings();
+    registerSW();
     renderMap();
 
     // 4. 接続戦略:
@@ -2618,6 +2753,7 @@ async function initApp() {
   } catch(e) {
     console.error('[initApp] エラー:', e);
     applyGlobalSettings();
+    registerSW();
     renderMap();
   } finally {
     loading.style.opacity = '0';
